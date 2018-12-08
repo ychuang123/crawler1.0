@@ -1,0 +1,62 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+body
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: black;
+}
+</style>
+</head>
+<body>
+<div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+定义程序的运行，包括启动方式、运行需要的种子URL等参数
+</div><div style="margin-top:8px;margin-left:8px;margin-right:10px;">
+本例假定要搜索并采集下面关键词的新闻：
+</div><div style="margin-top:8px;margin-left:8px;margin-right:10px;">
+<font style="color:blue;">联合国 人权</font>
+</div><div style="margin-top:8px;margin-left:8px;margin-right:10px;">
+<font style="color:blue;">转基因</font>
+</div><div style="margin-top:8px;margin-left:8px;margin-right:10px;">
+<font style="color:blue;">南海</font>
+</div>
+<ol>
+	<li>
+		点击 <font style="color:blue;">增加任务</font> 按钮，弹出 <font style="color:blue;">选择程序</font> 对话框
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">程序</font> 下拉选择框，选择百度新闻搜索
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">确定</font> 按钮，弹出 <font style="color:blue;">增加任务</font> 对话框
+	</li>
+	<li style="margin-top:8px;">
+		输入任务名称：百度新闻搜索
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">运行类型</font> 下拉选择框，选择手动运行
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">文件</font> 按钮，弹出本地文件选择对话框，选择种子URL文件
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		选择的文件内容必须是 ANSI 编码格式的
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		每一行为一个种子URL。使用 input 指定搜索关键词
+		</div>
+		<img style="margin-left:4px;margin-top:6px;" border="1" src="img/example_uioper_list_task_define_seed.png"/>
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		输入 @seed，从种子URL获取关键词
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">确定</font> 按钮提交
+		</div>
+	</li>
+</ol>
+<img style="margin-left:10px;" border="1" src="img/example_uioper_list_task_add.png"/>
+<img style="margin-left:10px;margin-top:10px;" border="1" src="img/example_uioper_list_task_define.png"/>
+</body>
+</html>

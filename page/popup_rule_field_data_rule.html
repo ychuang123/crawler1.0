@@ -1,0 +1,160 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function AddField() {
+    var err = callback('crawler_check_select_node');
+	if (err != '') {
+		alert(err);
+		return;
+	}
+	
+    var fieldname = document.getElementById("input_fieldname").value;
+	if(fieldname == '') {
+		alert('请输入字段名称！');
+		return;
+	}
+	
+    var valuetype = document.getElementById("select_valuetype").value;
+	var value_process = document.getElementById("input_process").value;
+	var value_default = document.getElementById("input_default").value;
+	var value_constraint = document.getElementById("input_constraint").value;
+    var value_notnull = document.getElementById("input_notnull").checked ? 1 : 0;
+    
+    var field_index = callback('crawler_add_rule_field', fieldname, valuetype, value_process, value_default, value_constraint, value_notnull);
+	
+    if (typeof field_index == "string") {
+        alert(field_index);
+        return;
+    }
+
+    crawler_active_ui_runjs(1, 'update_fields_2_ui("fields_list_ruledefine", ' + field_index + ');');
+	crawler_popup_wnd_hide();
+}
+
+function UpdateValueTypes(s)
+{
+	var ops = document.getElementById("select_valuetype").options;
+	ops.length = 2;
+	
+	if(s == '') {
+		return;
+	}
+	
+	var items = s.split(",");
+    for (var i = 0; i < items.length; i++) {
+		value = items[i];
+		name = items[i];
+		
+		if(name == 'first_option') {
+			name = '首个选项';
+		} else if(name == 'last_option') {
+			name = '末尾选项';
+		} else if(name == 'all_option') {
+			name = '所有选项';
+		}
+		ops.add(new Option(name, value));
+	}
+}
+
+function load()
+{
+	var field_id = -1;
+	var url = window.location.href;
+    var pos = url.indexOf('?');
+    var query = url.substring(pos + 1);
+    var params = query.split("&");
+    for (var i = 0; i < params.length; i++) {
+		var namevalue = params[i].split("=");
+        if(namevalue.length != 2) {
+			continue;
+        }
+		if(namevalue[0] == 'field_id') {
+            field_id = parseInt(namevalue[1]);
+		}
+    }
+	
+	callback('crawler_update_select_node_2_ui');
+	
+	if(field_id >= 0) { // 修改字段
+		document.getElementById("input_fieldname").value = callback('crawler_get_rule_field_name', field_id);
+		document.getElementById("select_valuetype").value = callback('crawler_get_rule_field_value_type', field_id);
+		document.getElementById('input_process').value = callback('crawler_get_rule_field_value_process', field_id);
+		document.getElementById('input_default').value = callback('crawler_get_rule_field_value_default', field_id);
+		document.getElementById('input_constraint').value = callback('crawler_get_rule_field_value_constraint', field_id);
+		document.getElementById('input_notnull').checked = callback('crawler_get_rule_field_value_notnull', field_id) == 1;
+		
+		document.getElementById("input_fieldname").setAttribute('readonly', 'readonly');
+	}
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+	<div>
+		高亮
+		<span id="select_nodenum" title="选择的高亮节点数量">0</span>
+		<input type="button" value="清除" title="取消所有高亮节点" onclick="callback('crawler_clear_select_nodes');"/>
+		<input type="button" value="上移" title="选择所有高亮节点的父节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'up');"/>
+		<input type="button" value="左移" title="选择所有高亮节点的前一个兄弟节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'left');"/>
+		<input type="button" value="右移" title="选择所有高亮节点的后一个兄弟节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'right');"/>
+		<input type="button" value="下移" title="选择所有高亮节点的相同文本子节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'down');"/>
+	</div>
+	
+	<div style="margin-top:10px;">
+		字段名称
+		<input id="input_fieldname" type="text" style="width:180px;"/>
+	</div>
+	
+	<div style="margin-top:5px;">
+		取值类型
+		<select id="select_valuetype" style="width:180px;">
+			<option value="#text">文本</option>
+			<option value="#url">网址</option>
+		<select>
+	</div>
+	
+	<div style="margin-top:5px;">
+		取值处理
+		<input id="input_process" type="text" style="width:180px;" title="num取正整数 left_substr:off,count取左子串 right_substr:off,count取右子串 off为起始位置，第1个位置是1，以此类推，count为要取子串的长度，0表示取到末尾"/>
+	</div>
+	
+	<div style="margin-top:5px;">
+		默认取值
+		<input id="input_default" type="text" style="width:180px;" title="默认值。取值为空时采用"/>
+	</div>
+	
+	<div style="margin-top:5px;">
+		取值区间
+		<input id="input_constraint" type="text" style="width:180px;" title="枚举区间:枚举值1,区间1左值~区间1右值,枚举值2"/>
+	</div>
+	
+	<div style="margin-top:5px;">
+		不许为空
+		<input id="input_notnull" type="checkbox"/>
+	</div>
+	
+	<div style="margin-top:10px;">
+		<input type="button" value="确定" onclick="AddField();"/>
+		<input type="button" value="退出" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+</body>
+</html>

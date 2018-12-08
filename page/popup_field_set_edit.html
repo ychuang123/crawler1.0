@@ -1,0 +1,98 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function Commit(field_set_index)
+{
+    var name = document.getElementById("name").value;
+	if(name == '') {
+		alert('请输入模板名称！');
+		return;
+	}
+	
+	var fields = document.getElementById("fields").value;
+	if(fields == '') {
+		alert('请输入字段集合！');
+		return;
+	}
+	
+    var msg = callback('crawler_field_set_add', field_set_index, name, fields);
+    if (msg == '') {
+		if(field_set_index >= 0) {
+			alert('修改字段模板成功');
+		} else {
+			alert('增加字段模板成功');
+		}
+        crawler_popup_wnd_hide();
+		crawler_active_ui_runjs(2, 'refresh();');
+        return;
+    }
+	
+	alert(msg);
+}
+
+function load()
+{
+	var url = window.location.href;
+    var pos = url.indexOf('?');
+    var baseurl = url;
+    var field_set_index = -1;
+    if (pos > 0) {
+        baseurl = url.substring(0, pos);
+        var query = url.substring(pos + 1);
+        var params = query.split("&");
+        for (var i = 0; i < params.length; i++) {
+            var namevalue = params[i].split("=");
+            if (namevalue.length != 2) {
+                continue;
+            }
+            if (namevalue[0] == 'field_set_index') {
+                field_set_index = parseInt(namevalue[1]);
+            }
+        }
+    }
+	
+	if (field_set_index >= 0) {
+		document.getElementById('name').value = callback('crawler_field_set_get_name', field_set_index);
+		document.getElementById('name').setAttribute('readonly', 'readonly');
+		document.getElementById('fields').value = callback('crawler_field_set_get_fields', field_set_index);
+	}
+	document.getElementById('btn_ok').setAttribute('onclick', 'Commit(' + field_set_index + ');');
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+
+	<div>
+		模板名称
+		<input id="name" type="text" style="width:360px;"/>
+	</div>
+	<div style="margin-top:10px;">
+		字段集合
+		<input id="fields" type="text" style="width:360px;"/> 逗号分隔
+	</div>
+	<div style="margin-top:10px;">
+		<input type="button" value="确定" id="btn_ok"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+</body>
+</html>

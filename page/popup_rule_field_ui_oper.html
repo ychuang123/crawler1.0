@@ -1,0 +1,115 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function AddField()
+{
+	var err = callback('crawler_check_select_node');
+	if (err != '') {
+		alert(err);
+		return;
+	}
+
+    var fieldname = '[按钮]';
+    if (!document.getElementById('checkbox_button').checked) {
+        fieldname = document.getElementById("input_fieldname").value;
+        if (fieldname == '') {
+            alert('请输入字段名称！');
+            return;
+        }
+    }
+
+    var field_index = callback('crawler_add_rule_field', fieldname);
+	
+    if (typeof field_index == "string") {
+        alert(field_index);
+        return;
+    }
+
+    crawler_active_ui_runjs(1, 'update_fields_2_ui("fields_list_ruledefine", ' + field_index + ');');
+	crawler_popup_wnd_hide();
+}
+
+function load()
+{
+	var field_id = -1;
+	var url = window.location.href;
+    var pos = url.indexOf('?');
+    var query = url.substring(pos + 1);
+    var params = query.split("&");
+    for (var i = 0; i < params.length; i++) {
+		var namevalue = params[i].split("=");
+        if(namevalue.length != 2) {
+			continue;
+        }
+		if(namevalue[0] == 'field_id') {
+            field_id = parseInt(namevalue[1]);
+		}
+    }
+	
+	callback('crawler_update_select_node_2_ui');
+	
+	if(field_id >= 0) { // 修改字段
+        var field_name = callback('crawler_get_rule_field_name', field_id);
+		document.getElementById("input_fieldname").value = field_name;
+		if (field_name == '[按钮]') {
+		    document.getElementById('checkbox_button').checked = true;
+		    on_button_check();
+		}
+
+		document.getElementById("checkbox_button").setAttribute('readonly', 'readonly');
+		document.getElementById("input_fieldname").setAttribute('readonly', 'readonly');
+	}
+}
+
+function on_button_check() {
+    var checkbox_button = document.getElementById('checkbox_button').checked;
+    document.getElementById('div_fieldname').style.display = checkbox_button ? 'none' : '';
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+	<div>
+		高亮
+		<span id="select_nodenum" title="选择的高亮节点数量">0</span>
+		<input type="button" value="清除" title="取消所有高亮节点" onclick="callback('crawler_clear_select_nodes');"/>
+		<input type="button" value="上移" title="选择所有高亮节点的父节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'up');"/>
+		<input type="button" value="左移" title="选择所有高亮节点的前一个兄弟节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'left');"/>
+		<input type="button" value="右移" title="选择所有高亮节点的后一个兄弟节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'right');"/>
+		<input type="button" value="下移" title="选择所有高亮节点的相同文本子节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'down');"/>
+	</div>
+	
+	<div style="margin-top:10px;">
+        <input id="checkbox_button" onclick="on_button_check();" type="checkbox"/>提交按钮
+	</div>
+	
+	<div id="div_fieldname" style="margin-top:10px;">
+		字段名称
+		<input id="input_fieldname" type="text" style="width:92px;"/>
+	</div>
+	
+	<div style="margin-top:10px;">
+		<input type="button" value="确定" onclick="AddField();"/>
+		<input type="button" value="退出" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+</body>
+</html>

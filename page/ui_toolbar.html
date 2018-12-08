@@ -1,0 +1,1016 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+</style>
+
+<script type="text/javascript">
+
+function endWith(targetStr, endStr) {
+    var d = targetStr.length - endStr.length;
+    return d>=0 && targetStr.lastIndexOf(endStr)==d;
+}
+
+function hide_toolbar_exp_data() {
+    document.getElementById('toolbar_exp_data').style.display = 'none';
+    document.getElementById('toolbar_exp_data_ruledefine').style.display = 'none';
+}
+
+function updateAuthListToolBar() {
+	document.getElementById('auth_query_total_num').innerHTML = callback('crawler_auth_query_total_num');
+	document.getElementById('auth_query_total_page').innerHTML = callback('crawler_auth_query_total_page');
+	document.getElementById('auth_query_cur_page').innerHTML = callback('crawler_auth_query_cur_page');
+}
+
+function updateProgramTestStatus() {
+	document.getElementById('program_test_status').innerHTML = callback('crawler_get_program_test_status');
+}
+
+function updateDebugStatus() {
+	document.getElementById('exe_debug_task_name').innerHTML = callback('crawler_get_debug_execute_name');
+	document.getElementById('exe_debug_task_status').innerHTML = callback('crawler_get_debug_execute_status');
+}
+
+function exeDebugStart() {
+	callback('crawler_set_exe_debug_crawl_shell', 4);
+	var status = callback('crawler_get_debug_execute_status');
+	if(status != '未运行') {
+		alert('当前不是未运行状态！');
+		return;
+	}
+	
+	if(callback('crawler_exe_debug_login') == 1) { // 已登录。询问用户是否要强制退出登录
+		if (crawl_prompt_yes_or_no('是否要清除登录状态？') == 1) {
+			callback('crawler_exe_debug_set_login_timeout');
+        }
+	}
+	callback('crawler_exe_debug_cmd', 'restart');
+}
+
+function exeDebugStop() {
+	var status = callback('crawler_get_debug_execute_status');
+	if(status != '运行中') {
+		alert('当前不是运行中状态！');
+		return;
+	}
+	callback('crawler_exe_debug_cmd', 'stop');
+}
+
+function exeDebugContinue() {
+	var status = callback('crawler_get_debug_execute_status');
+	if(status != '暂停中') {
+		alert('当前不是暂停中状态！');
+		return;
+	}
+	callback('crawler_exe_debug_cmd', 'continue');
+}
+
+function updateToolBar(uimodel) {
+	document.getElementById('uimodel_browse_page').style.display = 'none';
+	document.getElementById('uimodel_ext_data').style.display = 'none';
+	document.getElementById('uimodel_rule_list').style.display = 'none';
+	document.getElementById('uimodel_rule_define_browser').style.display = 'none';
+	document.getElementById('uimodel_rule_define_study').style.display = 'none';
+	document.getElementById('uimodel_task_list').style.display = 'none';
+	document.getElementById('uimodel_task_define').style.display = 'none';
+	document.getElementById('uimodel_task_test').style.display = 'none';
+	document.getElementById('uimodel_exe_list').style.display = 'none';
+	document.getElementById('uimodel_exe_debug').style.display = 'none';
+	document.getElementById('uimodel_exe_debug_hide_shell').style.display = 'none';
+	document.getElementById('uimodel_exe_debug_show_shell').style.display = 'none';
+	document.getElementById('uimodel_data_rec_query').style.display = 'none';
+	document.getElementById('uimodel_verify_code_list').style.display = 'none';
+	document.getElementById('uimodel_conf_list').style.display = 'none';
+	document.getElementById('uimodel_field_set').style.display = 'none';
+	document.getElementById('uimodel_crawler_list').style.display = 'none';
+	document.getElementById('uimodel_reg').style.display = 'none';
+	document.getElementById('uimodel_auth_mgr').style.display = 'none';
+	document.getElementById('span_auth_mgr').style.display = 'none';
+	document.getElementById('input_write_2_db').style.display = 'none';
+	document.getElementById('span_conf_db').style.display = 'none';
+	document.getElementById('exe_debug_show_shell_toolbar').style.display = 'none';
+	document.getElementById('uimodel_help').style.display = 'none';
+	
+	hide_toolbar_exp_data();
+	
+	if (uimodel == 'uimodel_ext_data_show_crawled') {
+	    document.getElementById('uimodel_ext_data').style.display = '';
+	    document.getElementById('toolbar_exp_data').style.display = '';
+
+	} else if (uimodel == 'uimodel_rule_define_browser_single' || uimodel == 'uimodel_rule_define_browser_double') {
+	    document.getElementById('uimodel_rule_define_browser').style.display = '';
+
+	} else if (uimodel == 'uimodel_rule_define_study_single' || uimodel == 'uimodel_rule_define_study_double') {
+	    document.getElementById('uimodel_rule_define_study').style.display = '';
+
+	} else if (uimodel == 'uimodel_rule_define_study_single_show_crawled' || uimodel == 'uimodel_rule_define_study_double_show_crawled') {
+	    document.getElementById('uimodel_rule_define_study').style.display = '';
+	    document.getElementById('toolbar_exp_data_ruledefine').style.display = '';
+
+	} else if (uimodel == 'uimodel_exe_debug_show_shell') {
+	    document.getElementById('uimodel_exe_debug').style.display = '';
+	    document.getElementById('uimodel_exe_debug_show_shell').style.display = '';
+		document.getElementById('exe_debug_show_shell_toolbar').style.display = '';
+		
+	} else if (uimodel == 'uimodel_exe_debug') {
+	    document.getElementById('uimodel_exe_debug').style.display = '';
+	    document.getElementById('uimodel_exe_debug_hide_shell').style.display = '';
+		
+    } else {
+	    document.getElementById(uimodel).style.display = '';
+	}
+
+	if (uimodel == 'uimodel_ext_data') {
+	    document.getElementById("select_nodenum").innerHTML = "0";
+	    document.getElementById("exclude_nodenum").innerHTML = "0";
+	    document.getElementById("environ_nodenum").innerHTML = "0";
+	    update_fields_2_ui('fields_list', 0);
+	    callback('crawler_update_exclude_node_num');
+	    callback('crawler_update_environ_node_num');
+
+	} else if (uimodel == 'uimodel_rule_define_study_single' || uimodel == 'uimodel_rule_define_study_single_show_crawled'
+		|| uimodel == 'uimodel_rule_define_study_double' || uimodel == 'uimodel_rule_define_study_double_show_crawled') {
+	    document.getElementById("select_nodenum_ruledefine").innerHTML = "0";
+	    document.getElementById("exclude_nodenum_ruledefine").innerHTML = "0";
+	    document.getElementById("environ_nodenum_ruledefine").innerHTML = "0";
+	    update_fields_2_ui('fields_list_ruledefine', 0);
+	    callback('crawler_update_exclude_node_num');
+	    callback('crawler_update_environ_node_num');
+
+	    rule_type = callback('crawler_get_studyrule_type');
+	    document.getElementById("rule_define_extdata").style.display = rule_type == 'data_rule' ? '' : 'none';
+		document.getElementById("toolbar_define_rule_fieldset").style.display = rule_type == 'verify_code' ? 'none' : '';
+
+	    if (uimodel == 'uimodel_rule_define_study_single' || uimodel == 'uimodel_rule_define_study_single_show_crawled') {
+	        document.getElementById("btn_studyrule").setAttribute('onclick', 'StudyRule(3,0);');
+	    } else {
+	        document.getElementById("btn_studyrule").setAttribute('onclick', 'StudyRule(3,5);');
+	    }
+
+	} else if (uimodel == 'uimodel_task_test') {
+	
+	} else if (uimodel == 'uimodel_exe_list') {
+		callback('crawler_show_execute_run_log', '');
+		
+	} else if (uimodel == 'uimodel_data_rec_query') {
+	
+		if(callback('crawler_is_senior_version') == 1) {
+			document.getElementById('input_write_2_db').style.display = '';
+			document.getElementById('span_conf_db').style.display = '';
+		}
+		
+	    document.getElementById('rec_query_total_num').innerHTML = callback('crawler_get_rec_query_total_num');
+	    document.getElementById('rec_query_total_page').innerHTML = callback('crawler_get_rec_query_total_page');
+	    document.getElementById('rec_query_cur_page').innerHTML = callback('crawler_get_rec_query_cur_page');
+	    document.getElementById('check_rec_2_db_start').checked = callback('crawler_get_rec_2_db_start') == 1;
+	    document.getElementById('check_rec_2_filesys_start').checked = callback('crawler_get_rec_2_filesys_start') == 1;
+		
+	} else if(uimodel == 'uimodel_conf_list' || uimodel == 'uimodel_field_set' || uimodel == 'uimodel_crawler_list') {
+		document.getElementById(uimodel + '_select').value = uimodel;
+		
+	} else if(uimodel == 'uimodel_reg') {
+		if(callback('crawler_can_create_auth') == 1) {
+			updateAuthListToolBar();
+			document.getElementById('span_auth_mgr').style.display = '';
+		}
+	}
+}
+
+function enter_uimodel(uimodel)
+{
+	var err = crawler_enter_ui_model(uimodel);
+	if(err != '') {
+		alert(err);
+	}
+}
+
+function load()
+{
+	var msg = '本版本软件有效期：' + callback('crawler_get_expiry_date') + '，请提前下载新版本';
+	document.getElementById('expiry_date').innerHTML = msg;
+	document.getElementById('expiry_date2').innerHTML = msg;
+	document.getElementById('expiry_date3').innerHTML = msg;
+	updateToolBar(crawler_get_ui_model());
+}
+
+function AddTempField()
+{
+	var err = callback('crawler_check_select_node');
+	if (err != '') {
+		alert(err);
+		return;
+	}
+	
+    var fieldname = '字段' + (callback('crawler_get_rule_field_count') + 1);
+    var valuetype = '#text';
+	var value_process = '';
+	var value_default = '';
+	var value_constraint = '';
+    var value_notnull = 0;
+    var field_index = callback('crawler_add_rule_field', fieldname, valuetype, value_process, value_default, value_constraint, value_notnull);
+	
+    if (typeof field_index == "string") {
+        alert(field_index);
+        return;
+    }
+	
+    update_fields_2_ui('fields_list', field_index);
+}
+
+function update_fields_2_ui(id, target_field)
+{
+	var ops = document.getElementById(id).options;
+	ops.length = 0;
+	
+	var count = callback('crawler_get_rule_field_count');
+	for (var i = 0; i < count; i++) {
+		var field_name = callback('crawler_get_rule_field_name', i);
+		ops.add(new Option(field_name, i));
+	}
+
+	document.getElementById(id).value = target_field;
+	OnSelectFieldChange(document.getElementById(id).value);
+}
+
+function OnSelectClick(elm) {
+    if (elm.options.length == 1) {
+        callback('crawler_show_rule_field_nodes', 0);
+    }
+}
+
+function OnSelectFieldChange(value)
+{
+	var field_id = parseInt(value);
+	callback('crawler_show_rule_field_nodes', field_id);
+}
+
+function AddField() {
+    var rule_type = callback('crawler_get_studyrule_type');
+    if (rule_type == 'data_rule') {
+        crawler_popup_wnd_show('增加字段', 'popup_rule_field_data_rule.html', 450, 400);
+    } else if (rule_type == 'ui_oper') {
+        crawler_popup_wnd_show('增加字段', 'popup_rule_field_ui_oper.html', 450, 250);
+    } else if (rule_type == 'verify_code') {
+        crawler_popup_wnd_show('增加字段', 'popup_rule_field_verify_code.html', 450, 300);
+    } else {
+        alert('invalid rule type: ' + rule_type);
+    }
+}
+
+function ModField()
+{
+	var selValue = document.getElementById('fields_list_ruledefine').value;
+	if(selValue == '') {
+		alert('请选择要修改的字段！');
+		return;
+	}
+	
+	var field_id = parseInt(selValue);
+	callback('crawler_show_rule_field_nodes', field_id);
+	
+	var rule_type = callback('crawler_get_studyrule_type');
+	if (rule_type == 'data_rule') {
+        var err = crawler_popup_wnd_show('修改字段', 'popup_rule_field_data_rule.html?field_id=' + field_id, 450, 400);
+		if (typeof err == "string") {
+			alert(err);
+		}
+		
+    } else if (rule_type == 'ui_oper') {
+        var err = crawler_popup_wnd_show('修改字段', 'popup_rule_field_ui_oper.html?field_id=' + field_id, 450, 250);
+		if (typeof err == "string") {
+			alert(err);
+		}
+	
+    } else if (rule_type == 'verify_code') {
+        var err = crawler_popup_wnd_show('修改字段', 'popup_rule_field_verify_code.html?field_id=' + field_id, 450, 300);
+		if (typeof err == "string") {
+			alert(err);
+		}
+	
+    } else {
+        alert('invalid rule type: ' + rule_type);
+    }
+}
+
+function DelField(rename) {
+    var id = rename ? 'fields_list' : 'fields_list_ruledefine';
+	var selValue = document.getElementById(id).value;
+	if(selValue == '') {
+		alert('请选择要删除的字段！');
+		return;
+	}
+	
+	var field_index = parseInt(selValue);
+    var err = callback('crawler_del_rule_field', field_index);
+    if (err != '') {
+        alert(err);
+        return;
+    }
+	
+	if(rename) {
+		callback('crawler_rename_rule_field');
+	}
+	
+    var pre_field = field_index - 1;
+    if (pre_field < 0) {
+        pre_field = 0;
+    }
+    update_fields_2_ui(id, pre_field);
+}
+
+function LoadFieldSet(select_id, field_set_index) {
+
+	var count = callback('crawler_field_set_add_2_rule', field_set_index);
+    if (count == 0) {
+		return;
+	}
+	
+    var selValue = document.getElementById(select_id).value;
+	var field_index = 0;
+	if(selValue != '') {
+		field_index = parseInt(selValue);
+	}
+	update_fields_2_ui(select_id, field_index);
+}
+
+function StudyRule(shell1, shell2)
+{
+    alert(callback('crawler_study_rule', shell1, shell2));
+}
+
+function ExtData(shell1, shell2) {
+    var err = callback('crawler_study_rule', shell1, shell2);
+    if (err.indexOf('学习成功') != 0) {
+        alert(err);
+        return;
+    }
+    alert(callback('crawler_apply_rule'));
+}
+
+function SaveRule()
+{
+    var err = crawler_popup_wnd_show("保存规则", "popup_commit_rule.html", 300, 200);
+    if (typeof err == "string") {
+        alert(err);
+    }
+}
+
+function ApplyRule()
+{
+	alert(callback('crawler_apply_rule'));
+}
+
+function SelectExcludeNodes()
+{
+	var err = crawler_popup_wnd_show("设置排除节点", "popup_select_nodes.html?exclude_flag=1");
+	if (typeof err == "string") {
+        alert(err);
+    }
+}
+
+function SelectEnvironNodes()
+{
+	var err = crawler_popup_wnd_show("设置环境节点", "popup_select_nodes.html?exclude_flag=0");
+	if (typeof err == "string") {
+        alert(err);
+    }
+}
+
+function exp_data() {
+    var msg = callback('crawler_exp_ext_data');
+    if (msg != '') {
+        alert(msg);
+    }
+}
+
+function change_url() {
+	var curSubMenu = crawler_get_ui_model();
+	if(curSubMenu == 'uimodel_rule_define_study_single' || curSubMenu == 'uimodel_rule_define_study_single_show_crawled') {
+		enter_uimodel('uimodel_rule_define_browser_single');
+	} else {
+		enter_uimodel('uimodel_rule_define_browser_double');
+	}
+}
+
+function hide_data() {
+    var curSubMenu = crawler_get_ui_model();
+    var err = 'invalid menu';
+    if (curSubMenu == 'uimodel_ext_data_show_crawled') {
+        err = crawler_enter_ui_model('uimodel_ext_data');
+    } else if (curSubMenu == 'uimodel_rule_define_study_single_show_crawled') {
+        err = crawler_enter_ui_model('uimodel_rule_define_study_single');
+    } else if (curSubMenu == 'uimodel_rule_define_study_double_show_crawled') {
+        err = crawler_enter_ui_model('uimodel_rule_define_study_double');
+    }
+    if (err != '') {
+        alert(err);
+        return;
+    }
+    hide_toolbar_exp_data();
+}
+
+function add_program_step_rule() {
+    if (callback('crawler_cur_select_is_program_step') != 1) {
+        alert("请选择步骤！");
+        return;
+    }
+    crawler_popup_wnd_show('选择规则', 'popup_select_rule.html', 400, 200);
+}
+
+function add_program_step() {
+	var seed_type = callback('crawler_get_program_select_step_seed_types');
+	if(seed_type != 'crawl_data') {
+		alert('该类型只有1个步骤！');
+		return;
+	}
+	
+    if (callback('crawler_cur_select_is_program_step_rule') != 1) {
+        alert('请选择规则！');
+        return;
+    }
+	
+	var rule_type = callback('crawler_get_program_select_rule_type');
+	if(rule_type == '数据抽取规则') {
+		if (callback('crawler_get_program_select_rule_url_fields') == '') {
+			alert('该规则没有网址类型的字段！');
+			return;
+		}
+		crawler_popup_wnd_show('选择规则字段', 'popup_add_program_step.html', 300, 200);
+		return;
+	}
+	
+	if(rule_type == '网页交互操作') {
+		if(callback('crawler_cur_select_step_rule_is_step_or_turnpage', '') == 1) {
+			alert('该规则已经增加子步骤或翻页');
+			return;
+		}
+		var err = callback('crawler_add_program_study_step', '');
+		if(err != '') {
+			alert(err);
+			return;
+		}
+		crawler_active_ui_runjs(2, 'refresh();');
+	}
+}
+
+function set_step_turnpage() {
+	var seed_type = callback('crawler_get_program_select_step_seed_types');
+	if(seed_type != 'crawl_data') {
+		alert('该类型不能翻页！');
+		return;
+	}
+	
+    if (callback('crawler_cur_select_is_program_step') != 1) {
+        alert('请选择要配置翻页的步骤！');
+        return;
+    }
+    if (callback('crawler_get_cur_select_seed_type') != 'crawl_data') {
+        alert('请选择采集数据的步骤配置翻页！');
+        return;
+    }
+
+    crawler_popup_wnd_show('配置翻页', 'popup_set_step_turnpage.html', 350, 250);
+}
+
+function move_program_rule(direction) {
+    if (callback('crawler_cur_select_is_program_step_rule') != 1) {
+        alert('请选择规则！');
+        return;
+    }
+    callback('crawler_move_program_rule', direction);
+    crawler_active_ui_runjs(2, 'refresh();');
+}
+
+function del_program_content() {
+    if (callback('crawler_cur_select_is_program_step') != 1 && callback('crawler_cur_select_is_program_step_rule') != 1) {
+        alert("请选择要删除的步骤或规则！");
+        return;
+    }
+    var affect_steps = callback('crawler_cur_select_affect_steps');
+    if (affect_steps != '') {
+        if (crawl_prompt_yes_or_no('步骤 ' + affect_steps + ' 也要被删除，确定要删除？') == 0) {
+            return;
+        }
+    }
+    callback('crawler_remove_cur_select_program_content');
+    crawler_active_ui_runjs(2, 'refresh();');
+}
+
+function prepare_test_program() {
+    var err = callback('crawler_check_study_program_valid');
+    if (err != '') {
+        alert(err);
+        return;
+    }
+    callback('crawler_prepare_test_study_program');
+    crawler_popup_wnd_show('输入参数', 'popup_exe_define.html?test=1', 1000, 300);
+}
+
+function save_program() {
+    var err = callback('crawler_check_study_program_valid');
+    if (err != '') {
+        alert(err);
+        return;
+    }
+    var err = crawler_popup_wnd_show("保存程序", "popup_commit_program.html", 300, 200);
+    if (typeof err == "string") {
+        alert(err);
+    }
+}
+
+function stop_test_program() {
+    if (callback('crawler_get_program_test_status') == '暂停中') {
+        alert('已停止');
+        return;
+    }
+    callback('crawler_test_study_program_cmd', 'stop');
+}
+
+function continue_test_program() {
+    if (callback('crawler_get_program_test_status') == '启动中') {
+        alert('已启动');
+        return;
+    }
+    if (callback('crawler_get_program_test_status') == '未运行') {
+        alert('已完成');
+        return;
+    }
+    callback('crawler_test_study_program_cmd', 'continue');
+}
+
+function restart_test_program() {
+    crawler_active_ui_runjs(5, 'clear();');
+    callback('crawler_test_study_program_cmd', 'restart');
+}
+
+function exit_test_program() {
+    if (callback('crawler_get_program_test_status') != '未运行' && callback('crawler_get_program_test_status') != '暂停中') {
+        alert('测试正在运行，请先停止测试！');
+        return;
+    }
+    enter_uimodel('uimodel_task_define');
+}
+
+function onCheckRec2DBStart() {
+    var err = callback('crawler_rec_2_db_start', document.getElementById('check_rec_2_db_start').checked ? 1 : 0);
+    if (err != '') {
+        document.getElementById('check_rec_2_db_start').checked = false;
+        alert(err);
+    }
+}
+
+function onCheckRec2FileSysStart() {
+    var err = callback('crawler_rec_2_filesys_start', document.getElementById('check_rec_2_filesys_start').checked ? 1 : 0);
+    if (err != '') {
+        document.getElementById('check_rec_2_filesys_start').checked = false;
+        alert(err);
+    }
+}
+
+function queryTurnPage(cmd) {
+    if (callback('crawler_query_load_onepage', cmd) == 1) {
+        document.getElementById('rec_query_cur_page').innerHTML = callback('crawler_get_rec_query_cur_page');
+        crawler_active_ui_runjs(2, 'refresh();');
+    }
+}
+
+function authQueryTurnPage(cmd) {
+    if (callback('crawler_auth_query_turnpage', cmd) == 1) {
+        document.getElementById('auth_query_cur_page').innerHTML = callback('crawler_auth_query_cur_page');
+        crawler_active_ui_runjs(2, 'refresh();');
+    }
+}
+
+function on_save_study_page(save_html) {
+    var study_url_3 = crawler_get_navigation_url(3);
+    if (study_url_3 == '' || endWith(study_url_3, 'ui_empty.html')) {
+        alert("请浏览网页");
+        return;
+    }
+
+    if (crawler_get_ui_model() == 'uimodel_rule_define_browser_double') {
+        var study_url_5 = crawler_get_navigation_url(5);
+        if (study_url_5 == '' || endWith(study_url_5, 'ui_empty.html')) {
+            alert("请浏览网页2");
+            return;
+        }
+    }
+
+    var title = '保存网页HTML代码';
+    var html = 'popup_navigation_save.html?save_html=1';
+    if (!save_html) {
+        title = '保存网页屏幕截图';
+        html = 'popup_navigation_save.html?save_html=0';
+    }
+    crawler_popup_wnd_show(title, html, 400, 200);
+}
+
+function on_save_debug_page(save_html) {
+    var title = '保存网页HTML代码';
+    var html = 'popup_navigation_save_debug.html?save_html=1';
+    if (!save_html) {
+        title = '保存网页屏幕截图';
+        html = 'popup_navigation_save_debug.html?save_html=0';
+    }
+    crawler_popup_wnd_show(title, html, 400, 200);
+}
+
+function recrawl_debug_page() {
+	
+	var status = callback('crawler_get_debug_execute_status');
+	if(status == '运行中') {
+		alert('当前正在运行，请停止后再试！');
+		return;
+	}
+	
+	var cur_url = crawler_get_navigation_url(4);
+    if (cur_url == '' || endWith(cur_url, 'ui_empty.html')) {
+        alert("调试还未开始！");
+        return;
+    }
+	
+	callback('crawler_recrawl_debug_page');
+}
+
+function exeDebugExit() {
+    if (callback('crawler_exe_debug_runing') == 1) {
+        if (crawl_prompt_yes_or_no('正在调试，确定要退出？') == 0) {
+            return;
+        }
+    }
+
+    callback('crawler_exe_debug_cmd', 'exit');
+    enter_uimodel('uimodel_exe_list')
+}
+
+function add_exe() {
+	var err = callback('crawler_exebase_can_add');
+	if(err != '') {
+		alert(err);
+		return;
+	}
+	crawler_popup_wnd_show('选择程序', 'popup_exe_select_program.html', 300, 200);
+}
+
+function open_help_file() {
+	//var help_file = callback('crawler_get_page_url', 'help/index.chm');
+	//execute_shell('open', 'explorer.exe', help_file);
+	
+	var err = crawler_help_wnd_show();
+	if(err != '') {
+		alert(err);
+	}
+}
+
+</script>
+</head>
+<body onLoad="load();" bgcolor="#666" style="margin-top:6px;margin-left:6px;margin-right:8px;">
+<div id="uimodel_browse_page" style="display:none">
+	<span>
+		<input type="button" value="抽取数据" title="从当前浏览网页中抽取结构化数据" onclick="enter_uimodel('uimodel_ext_data');" />
+		<input type="button" value="保存图片" title="保存当前浏览网页的屏幕截图" onclick="on_save_study_page(false);" />
+		<input type="button" value="保存网页" title="保存当前浏览网页的HTML代码" onclick="on_save_study_page(true);" />
+	</span>
+	<span id="expiry_date" style="float:right;FONT-FAMILY:宋体;font-size:18px;color:white;">
+	</span>
+</div>
+<div id="uimodel_ext_data" style="display:none">
+	<span>
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">高亮</span>
+		<span id="select_nodenum" title="选择的高亮节点数量">0</span>
+		<input type="button" value="清除" title="取消所有高亮节点" onclick="callback('crawler_clear_select_nodes');" style="width:50px;"/>
+	</span>
+	<span style="margin-left:20px;">
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">字段样本</span>
+		<select id="fields_list" style="width:92px;" onclick="OnSelectClick(this);" onchange="OnSelectFieldChange(this.value);"></select>
+		<input type="button" value="添加" title="将当前选择的高亮节点作为一个字段的样本" onclick="AddTempField();" style="width:50px;" />
+		<input type="button" value="删除" title="删除当前选择的字段样本" onclick="DelField(true);" style="width:50px;"/>
+	</span>
+	<span style="margin-left:20px;">
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">排除</span>
+		<span id="exclude_nodenum" title="选择的排除节点数量">0</span>
+		<input type="button" value="设置" title="设置排除节点" onclick="SelectExcludeNodes();" style="width:50px;"/>
+	</span>
+	<span style="margin-left:20px;">
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">环境</span>
+		<span id="environ_nodenum" title="选择的环境节点数量">0</span>
+		<input type="button" value="设置" title="设置环境节点" onclick="SelectEnvironNodes();" style="width:50px;"/>
+	</span>
+	<span style="margin-left:100px;">
+		<input type="button" id="btn_extdata" value="抽取" style="width:50px;" title="从网页中抽取字段样本对应的结构化数据" onclick="ExtData(3,0);" />
+		<input type="button" value="规则模板" title="查看学习到的规则模板" onclick="crawler_popup_wnd_show('学习到的规则模板', 'popup_show_rule_conf.html', 1000, 600);" />
+		<input type="button" value="返回" style="width:50px;" title="返回浏览模式" onclick="enter_uimodel('uimodel_browse_page');" />
+	</span>
+    <span id="toolbar_exp_data" style="margin-left:10px;display:none;">
+		<input type="button" value="导出数据" title="将数据保存到文件中" onclick="exp_data();"/>
+		<input type="button" value="隐藏数据" title="隐藏数据记录显示" onclick="hide_data();"/>
+	</span>
+</div>
+<div id="uimodel_rule_list" style="display:none">
+	<span>
+		<input type="button" value="增加规则" title="定义新的规则" onclick="crawler_popup_wnd_show('请选择', 'popup_rule_define_entry.html', 300, 200);" />
+		<input type="button" value="修改规则" title="修改选择的规则" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'mode_rule\');');" />
+		<input type="button" value="删除规则" title="删除选择的规则" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'del_rule\');');" />
+		<input type="button" value="规则模板" title="查看选择的规则的抽取模板" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'show_rulelines\');');" />
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="选择全部" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'select_all\');');" />
+		<input type="button" value="取消选择" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'unselect\');');" />
+	</span>
+</div>
+<div id="uimodel_rule_define_browser" style="display:none">
+	<span>
+		<input type="button" value="加载完成" title="加载完成学习规则" onclick="enter_uimodel(crawler_get_ui_model() == 'uimodel_rule_define_browser_single' ? 'uimodel_rule_define_study_single' : 'uimodel_rule_define_study_double');"/>
+        <input type="button" value="保存图片" title="保存当前浏览网页的屏幕截图" onclick="on_save_study_page(false);" />
+		<input type="button" value="保存网页" title="保存当前浏览网页的HTML代码" onclick="on_save_study_page(true);" />
+		<input type="button" value="返回" style="width:50px;" title="返回规则库页面" onclick="enter_uimodel('uimodel_rule_list');"/>
+	</span>
+</div>
+<div id="uimodel_rule_define_study" style="display:none">
+	<span>
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">高亮</span>
+		<span id="select_nodenum_ruledefine" title="选择的高亮节点数量">0</span>
+		<input type="button" value="清除" title="取消所有高亮节点" onclick="callback('crawler_clear_select_nodes');" style="width:50px;"/>
+	</span>
+	<span style="margin-left:20px;">
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">字段</span>
+		<select id="fields_list_ruledefine" style="width:92px;" onclick="OnSelectClick(this);" onchange="OnSelectFieldChange(this.value);"></select>
+		<input type="button" value="增加字段" title="将当前选择的高亮节点作为一个字段的样本" onclick="AddField();" />
+		<input type="button" value="修改字段" title="修改当前选择的字段样本" onclick="ModField();" />
+		<input type="button" value="删除字段" title="删除当前选择的字段样本" onclick="DelField(false);" />
+		<input id="toolbar_define_rule_fieldset" type="button" value="字段模板" title="选择并初始化字段模板的字段集合" onclick="crawler_popup_wnd_show('选择字段模板', 'popup_field_set_select.html?select_id=fields_list_ruledefine', 1000, 300);"/>
+	</span>
+	<span style="margin-left:20px;">
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">排除</span>
+		<span id="exclude_nodenum_ruledefine" title="选择的排除节点数量">0</span>
+		<input type="button" value="设置" title="设置排除节点" onclick="SelectExcludeNodes();" style="width:50px;"/>
+	</span>
+	<span style="margin-left:20px;">
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">环境</span>
+		<span id="environ_nodenum_ruledefine" title="选择的环境节点数量">0</span>
+		<input type="button" value="设置" title="设置环境节点" onclick="SelectEnvironNodes();" style="width:50px;"/>
+	</span>
+	<span style="margin-left:100px;">
+		<input type="button" id="btn_studyrule" value="学习规则" />
+		<input type="button" value="规则模板" title="查看学习到的规则模板" onclick="crawler_popup_wnd_show('学习到的规则模板', 'popup_show_rule_conf.html', 1000, 600);" />
+		<input id="rule_define_extdata" type="button" value="抽取数据" title="使用学习到的规则从网页抽取结构化数据" onclick="ApplyRule();" />
+		<input type="button" value="保存规则" onclick="SaveRule();" />
+		<input type="button" value="更换网页" title="返回上一页更换网页重新加载" onclick="change_url();" />
+		<input type="button" value="返回" style="width:50px;" title="返回规则库页面" onclick="enter_uimodel('uimodel_rule_list');"/>
+	</span>
+    <span id="toolbar_exp_data_ruledefine" style="margin-left:10px;display:none;">
+		<input type="button" value="导出数据" title="将数据保存到文件中" onclick="exp_data();"/>
+		<input type="button" value="隐藏数据" title="隐藏数据记录显示" onclick="hide_data();"/>
+	</span>
+</div>
+<div id="uimodel_task_list" style="display:none">
+	<span>
+		<input type="button" value="增加程序" title="定义新的程序" onclick="callback('crawler_clear_study_program');enter_uimodel('uimodel_task_define');" />
+		<input type="button" value="修改程序" title="修改选择的程序" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'mode_task\');');" />
+		<input type="button" value="删除程序" title="删除选择的程序" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'del_task\');');" />
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="选择全部" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'select_all\');');" />
+		<input type="button" value="取消选择" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'unselect\');');" />
+	</span>
+</div>
+<div id="uimodel_task_define" style="display:none">
+	<span>
+		<input type="button" value="增加种子" title="增加初始种子URL" onclick="crawler_popup_wnd_show('增加种子', 'popup_add_seed.html', 300, 200);" />
+		<input type="button" value="增加规则" title="增加所选步骤的处理规则" onclick="add_program_step_rule();" />
+        <input type="button" value="增加步骤" title="增加所选规则的后续处理步骤" onclick="add_program_step();" />
+        <input type="button" value="配置翻页" title="配置所选步骤的翻页" onclick="set_step_turnpage();" />
+		<input type="button" value="上移规则" title="将所选规则在所属步骤的位置向上移一位" onclick="move_program_rule('up');" />
+		<input type="button" value="下移规则" title="将所选规则在所属步骤的位置向下移一位" onclick="move_program_rule('down');" />
+        <input type="button" value="删除" style="width:50px;" title="删除所选元素" onclick="del_program_content();" />
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="测试" style="width:50px;" title="测试程序的执行" onclick="prepare_test_program();"/>
+		<input type="button" value="保存" style="width:50px;" title="保存程序的定义" onclick="save_program();"/>
+		<input type="button" value="返回" style="width:50px;" title="返回程序库" onclick="enter_uimodel('uimodel_task_list');"/>
+	</span>
+</div>
+<div id="uimodel_task_test" style="display:none">
+    <span>
+        <font style="color:white;font-family:宋体;font-size:18px;margin-left:10px;">状态:</font> 
+        <font id="program_test_status" style="color:white;font-family:宋体;font-size:18px;"></font>
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="暂停测试" onclick="stop_test_program();" />
+        <input type="button" value="继续测试" onclick="continue_test_program();" />
+        <input type="button" value="重新测试" onclick="restart_test_program();" />
+        <input type="button" value="返回" style="width:50px;" title="返回程序定义" onclick="exit_test_program();" />
+	</span>
+</div>
+<div id="uimodel_exe_list" style="display:none">
+	<span>
+		<input type="button" value="增加任务" title="定义新的任务" onclick="add_exe();" />
+		<input type="button" value="修改任务" title="修改选择的任务" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'mode_task\');');" />
+		<input type="button" value="删除任务" title="删除选择的任务" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'del_task\');');" />
+	</span>
+    <span style="margin-left:10px;">
+		<input type="button" value="启动采集" title="启动选择的任务" onclick="crawler_popup_wnd_show('选择采集种子范围', 'popup_select_crawl_seed_range.html', 300, 200);" />
+		<input type="button" value="停止采集" title="停止选择的任务" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'stop_execute\');');" />
+		<input type="button" value="采集日志" title="查看选择的任务的采集日志" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'show_execute_log\');');" />
+    </span>
+    <span style="margin-left:10px;">
+        <input type="button" value="调试" style="width:50px;" title="调试任务执行" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'debug_exe\');');" />
+	</span>
+    <span style="margin-left:10px;">
+		<input type="button" value="查看数据" title="查看选择的任务的数据" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'view_data\');');" />
+        <input type="button" value="备份数据" title="备份选择的任务的全部数据到本地文件" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'bak_data\');');" />
+		<input type="button" value="导出数据" title="导出选择的任务的数据到本地文件" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'exp_rule_data\');');" />
+		<input type="button" value="删除数据" title="删除选择的任务的数据" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'clear_data\');');" />
+		<input type="button" value="种子状态" title="查看选择的任务的种子状态" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'view_seed_status\');');" />
+		<input type="button" value="采集参数" title="爬虫采集该任务时将采用的参数" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'crawl_params\');');" />
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="选择全部" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'select_all\');');" />
+		<input type="button" value="取消选择" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'unselect\');');" />
+	</span>
+</div>
+<div id="uimodel_data_rec_query" style="display:none">
+	<span>
+        <font style="color:white;font-family:宋体;font-size:18px;">共 </font>
+        <font id="rec_query_total_num" style="color:white;font-family:宋体;font-size:18px;">0</font>
+        <font style="color:white;font-family:宋体;font-size:18px;"> 条记录 </font> 
+        <font id="rec_query_total_page" style="color:white;font-family:宋体;font-size:18px;">0</font>
+        <font style="color:white;font-family:宋体;font-size:18px;"> 页 当前为第 </font> 
+        <font id="rec_query_cur_page" style="color:white;font-family:宋体;font-size:18px;">0</font>
+        <font style="color:white;font-family:宋体;font-size:18px;"> 页</font> 
+
+        <input type="button" value="首页" style="width:50px;" onclick="queryTurnPage('first_page');"/>
+		<input type="button" value="上页" style="width:50px;" onclick="queryTurnPage('pre_page');"/>
+		<input type="button" value="下页" style="width:50px;" onclick="queryTurnPage('next_page');"/>
+        <input type="button" value="末页" style="width:50px;" onclick="queryTurnPage('last_page');"/>
+	</span>
+    <span style="margin-left:10px;">
+		<input type="button" value="记录详情" title="显示所选记录的详情内容" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'detail\');');" />
+		<input type="button" value="查看网页" title="显示所选记录的原始网页" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'show_html\');');" />
+		<input type="button" value="查看截屏" title="显示所选记录的网页截图" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'show_img\');');" />
+		<input type="button" value="删除" style="width:50px;" title="删除所选记录" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'remove\');');" />
+        <input type="button" value="写数据库" title="保存所选记录到数据库" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'write_db\');');" id="input_write_2_db" style="display:none;" />
+        <!--<input type="button" value="写文件" title="保存所选记录到文件系统" style="width:70px;" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'write_file\');');" />-->
+	</span>
+    <span style="margin-left:10px;">
+		<input type="button" value="选择全部" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'select_all\');');" />
+		<input type="button" value="取消选择" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'unselect\');');" />
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="选择显示字段" title="选择要显示的字段" style="width:130px;" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'select_show_fields\');');" />
+	</span>
+    <span style="margin-left:20px;display:none;" id="span_conf_db">
+        <font style="color:white;font-family:宋体;font-size:18px;">写数据库</font>
+		<input type="button" value="配置" style="width:50px;" onclick="crawler_popup_wnd_show('配置数据库', 'popup_conf_db_param.html', 1000, 600);" />
+		<input type="checkbox" id="check_rec_2_db_start" onclick="onCheckRec2DBStart();" />
+        <font style="color:white;font-family:宋体;font-size:18px;">启动</font>
+	</span>
+	<!--
+    <span style="margin-left:20px;">
+        <font style="color:white;font-family:宋体;font-size:18px;">写文件</font>
+		<input type="button" value="配置" style="width:50px;" onclick="crawler_popup_wnd_show('配置写文件', 'popup_conf_filesystem_param.html', 1000, 600);" />
+		<input type="checkbox" id="check_rec_2_filesys_start" onclick="onCheckRec2FileSysStart();" />
+        <font style="color:white;font-family:宋体;font-size:18px;">启动</font>
+	</span>
+	-->
+    <span style="margin-left:10px;">
+		<input type="button" value="返回" style="width:50px;" title="返回任务库" onclick="enter_uimodel('uimodel_exe_list');" />
+	</span>
+</div>
+<div id="uimodel_exe_debug" style="display:none">
+	<span>
+		<font style="color:white;font-family:宋体;font-size:18px;">任务:</font>
+        <font id="exe_debug_task_name" style="color:white;font-family:宋体;font-size:18px;"></font>
+        <font style="color:white;font-family:宋体;font-size:18px;margin-left:10px;">状态:</font> 
+        <font id="exe_debug_task_status" style="color:white;font-family:宋体;font-size:18px;"></font>
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" id="btn_start_debug" value="启动" style="width:50px;" title="开始执行" onclick="exeDebugStart();" />
+		<input type="button" id="btn_stop_debug" value="停止" style="width:50px;" title="停止执行" onclick="exeDebugStop();" />
+        <input type="button" id="btn_continue_debug" value="继续" style="width:50px;" title="继续执行" onclick="exeDebugContinue();" />
+	</span>
+    <span style="margin-left:10px;">
+		<input type="button" value="返回" style="width:50px;" title="返回任务库" onclick="exeDebugExit();" />
+	</span>
+    <span id="uimodel_exe_debug_hide_shell" style="margin-left:10px;">
+		<input type="button" value="显示采集" title="显示采集界面" onclick="enter_uimodel('uimodel_exe_debug_show_shell');"/>
+	</span>
+    <span id="uimodel_exe_debug_show_shell" style="margin-left:10px;display:none;">
+		<input type="button" value="隐藏采集" title="隐藏采集界面" onclick="enter_uimodel('uimodel_exe_debug');"/>
+	</span>
+	<span id="exe_debug_show_shell_toolbar" style="margin-left:10px;display:none;">
+		<input type="button" value="保存图片" title="保存当前网页的屏幕截图" onclick="on_save_debug_page(false);" />
+		<input type="button" value="保存网页" title="保存当前网页的HTML代码" onclick="on_save_debug_page(true);" />
+		<input type="button" value="重采本页" title="重新采集当前网页" onclick="recrawl_debug_page();"/>
+	</span>
+</div>
+<div id="uimodel_verify_code_list" style="display:none">
+	<span>
+		<input type="button" value="输入验证码" style="width:100px;" title="识别图片中的验证码" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'input_verify_code\');');" />
+	</span>
+    <span style="margin-left:10px;">
+		<input type="button" value="搜集验证码" style="width:100px;" title="开始搜集指定的新出现的验证码到指定的目录" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'start_collect\');');" />
+		<input type="button" value="停止搜集" title="停止搜集验证码" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'stop_collect\');');" />
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="选择全部" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'select_all\');');" />
+		<input type="button" value="取消选择" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'unselect\');');" />
+	</span>
+</div>
+<div id="uimodel_conf_list" style="display:none">
+	<span>
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">模块</span>
+		<select id="uimodel_conf_list_select" style="width:90px;" onchange="enter_uimodel(this.value);">>
+			<option value="uimodel_conf_list">系统参数</option>
+			<option value="uimodel_field_set">字段模板</option>
+			<option value="uimodel_crawler_list">爬虫列表</option>
+		</select>
+	</span>
+	<span style="margin-left:50px;">
+		<input type="button" value="修改配置" title="修改参数的值" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'set_conf\');');"/>
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="选择全部" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'select_all\');');" />
+		<input type="button" value="取消选择" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'unselect\');');" />
+	</span>
+</div>
+<div id="uimodel_field_set" style="display:none">
+	<span>
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">模块</span>
+		<select id="uimodel_field_set_select" style="width:90px;" onchange="enter_uimodel(this.value);">>
+			<option value="uimodel_conf_list">系统参数</option>
+			<option value="uimodel_field_set">字段模板</option>
+			<option value="uimodel_crawler_list">爬虫列表</option>
+		</select>
+	</span>
+	<span style="margin-left:50px;">
+		<input type="button" value="增加字段模板" title="定义新的字段模板" onclick="crawler_popup_wnd_show('新增字段模板', 'popup_field_set_edit.html', 600, 200);" style="width:120px;"/>
+		<input type="button" value="修改字段模板" title="修改选择的字段模板" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'mode_field_set\');');" style="width:120px;"/>
+		<input type="button" value="删除字段模板" title="删除选择的字段模板" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'del_field_set\');');" style="width:120px;"/>
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="选择全部" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'select_all\');');" />
+		<input type="button" value="取消选择" onclick="crawler_active_ui_runjs(2, 'on_cmd(\'unselect\');');" />
+	</span>
+</div>
+<div id="uimodel_crawler_list" style="display:none">
+	<span>
+		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">模块</span>
+		<select id="uimodel_crawler_list_select" style="width:90px;" onchange="enter_uimodel(this.value);">>
+			<option value="uimodel_conf_list">系统参数</option>
+			<option value="uimodel_field_set">字段模板</option>
+			<option value="uimodel_crawler_list">爬虫列表</option>
+		</select>
+	</span>
+</div>
+<div id="uimodel_reg" style="display:none">
+	<span>
+        <input type="button" value="本机机器码" style="width:110px;" title="显示本机机器码" onclick="crawler_popup_wnd_show('本机机器码', 'popup_show_diskinfo.html', 300, 180);" />
+		<input type="button" value="输入授权码" style="width:110px;" title="输入授权码激活授权" onclick="crawler_popup_wnd_show('输入授权码', 'popup_auth.html', 300, 180);" />
+	</span>
+	<span id="span_auth_mgr" style="margin-left:10px;display:none;">
+		<input type="button" value="授权管理" style="width:100px;" title="授权管理" onclick="callback('crawler_auth_enter_list'); enter_uimodel('uimodel_auth_mgr');" />
+	</span>
+	<span id="expiry_date2" style="float:right;FONT-FAMILY:宋体;font-size:18px;color:white;">
+	</span>
+</div>
+<div id="uimodel_help" style="display:none">
+	<span>
+        <input type="button" value="帮助文档" style="width:100px;" title="显示帮助文档" onclick="open_help_file();" />
+	</span>
+	<span id="expiry_date3" style="float:right;FONT-FAMILY:宋体;font-size:18px;color:white;">
+	</span>
+</div>
+<div id="uimodel_auth_mgr" style="display:none">
+	<span>
+        <font style="color:white;font-family:宋体;font-size:18px;">共 </font>
+        <font id="auth_query_total_num" style="color:white;font-family:宋体;font-size:18px;">0</font>
+        <font style="color:white;font-family:宋体;font-size:18px;"> 条记录 </font> 
+        <font id="auth_query_total_page" style="color:white;font-family:宋体;font-size:18px;">0</font>
+        <font style="color:white;font-family:宋体;font-size:18px;"> 页 当前为第 </font> 
+        <font id="auth_query_cur_page" style="color:white;font-family:宋体;font-size:18px;">0</font>
+        <font style="color:white;font-family:宋体;font-size:18px;"> 页</font> 
+
+        <input type="button" value="首页" style="width:50px;" onclick="authQueryTurnPage('first_page');"/>
+		<input type="button" value="上页" style="width:50px;" onclick="authQueryTurnPage('pre_page');"/>
+		<input type="button" value="下页" style="width:50px;" onclick="authQueryTurnPage('next_page');"/>
+        <input type="button" value="末页" style="width:50px;" onclick="authQueryTurnPage('last_page');"/>
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="授权" style="width:50px;" title="生成授权码" onclick="crawler_popup_wnd_show('生成授权码', 'popup_create_auth.html', 350, 400);" />
+	</span>
+	<span style="margin-left:10px;">
+		<input type="button" value="返回" style="width:50px;" title="返回注册信息" onclick="callback('crawler_auth_leave_query'); enter_uimodel('uimodel_reg');"/>
+	</span>
+</div>
+</body>
+</html>

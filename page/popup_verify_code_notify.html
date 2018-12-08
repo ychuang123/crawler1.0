@@ -1,0 +1,78 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function load() {
+    var url = window.location.href;
+    var pos = url.indexOf('?');
+    var notify_period_mins = '';
+    if (pos > 0) {
+        baseurl = url.substring(0, pos);
+        var query = url.substring(pos + 1);
+        var params = query.split("&");
+        for (var i = 0; i < params.length; i++) {
+            var namevalue = params[i].split("=");
+            if (namevalue.length != 2) {
+                continue;
+            }
+            if (namevalue[0] == 'notify_period_mins') {
+                notify_period_mins = namevalue[1];
+            }
+        }
+    }
+
+    document.getElementById('notify_period_mins').value = notify_period_mins;
+}
+
+function commit() {
+    crawler_enter_ui_model('uimodel_verify_code_list');
+	crawler_popup_wnd_hide();
+}
+
+function notify_next_time() {
+    var notify_period_mins = document.getElementById('notify_period_mins').value;
+    if (notify_period_mins == '') {
+        alert('请输入分钟数！');
+        return;
+    }
+	
+	var mins = parseInt(notify_period_mins);
+	if(mins <= 0) {
+		alert('请输入有效的分钟数！');
+        return;
+	}
+	
+    callback('crawler_verify_code_set_notify_period_mins', mins);
+    crawler_popup_wnd_hide();
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+	<div>
+        检测到验证码。是否现在要进入验证码列表处理？
+	</div>
+	<div style="margin-top:10px;">
+		<input type="button" value="是" onclick="commit();"/>
+		<input id="notify_period_mins" type="text" style="width:30px;margin-left:50px;"/><input type="button" value="分钟后提醒" onclick="notify_next_time();" style="width:100px;"/>
+	</div>
+</body>
+</html>

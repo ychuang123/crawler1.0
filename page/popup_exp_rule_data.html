@@ -1,0 +1,214 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+    function append(line) {
+        var text = document.getElementById('result').value;
+        if (text != '') {
+            text += '\n';
+        }
+        text += line;
+
+        document.getElementById('result').value = text;
+    }
+
+    function exp(execute_index, rule_index) {
+		document.getElementById('result').value = '';
+		document.getElementById('btn_ok').value = '正在导出';
+		append('检查参数 ...');
+        
+		var out_type = 'csv';
+		if(document.getElementById('out_sep').checked) {
+			out_type = 'sep';
+		} else if(document.getElementById('out_format').checked) {
+			out_type = 'format';
+		}
+		
+		var out_param = document.getElementById('out_param').value;
+		
+		var table = document.getElementById('fields');
+		
+		var contexts = '';
+		var context_num = callback('crawler_get_task_context_field_count');
+		for (i = 0; i < context_num; i++) {
+			if (document.getElementById('check_out_' + i).checked) {
+				if (contexts != '') {
+					contexts += ' ';
+				}
+				contexts += callback('crawler_get_task_context_field_name', i);
+			}
+		}
+		
+		var fields = '';
+		var field_num = callback('crawler_get_task_leaf_rule_field_num');
+		for (i = 0; i < field_num; i++) {
+			if (document.getElementById('check_out_' + (context_num + i)).checked) {
+				if (fields != '') {
+					fields += ' ';
+				}
+				fields += callback('crawler_get_task_leaf_rule_field_name', i);
+			}
+		}
+		
+        var path = document.getElementById('path').value;
+        if (path == '') {
+            append('请输入导出文件路径！');
+            document.getElementById('btn_ok').value = '开始导出';
+			return;
+        }
+		
+		var err = callback('crawler_exp_rule_data_init', path, out_type, out_param, contexts, fields);
+		if (err.length > 0) {
+			append(err);
+			document.getElementById('btn_ok').value = '开始导出';
+			return;
+		}
+		
+		callback('crawler_queue_result_select_rule', execute_index, parseInt(rule_index));
+        var total_page = callback('crawler_get_rec_query_total_page');
+        append('共有 ' + callback('crawler_get_rec_query_total_page') + ' 页的数据 ...');
+		
+		for(var pageNo = 1; pageNo <= total_page; pageNo++) {
+			append('导出第 ' + pageNo + ' 页的数据 ...');
+			var err = callback('crawler_exp_rule_data_cur_page');
+			if (err.length > 0) {
+				append('导出第 ' + pageNo + ' 页的数据失败：' + err);
+				document.getElementById('btn_ok').value = '开始导出';
+				return;
+			}
+			if (pageNo < total_page) {
+				callback('crawler_query_load_onepage', 'next_page');
+			}
+		}
+		callback('crawler_exp_rule_data_complete');
+		
+        append('导出数据完成！');
+        document.getElementById('btn_ok').value = '开始导出';
+    }
+
+function load() {
+    var execute_index = -1;
+    var url = window.location.href;
+    var pos = url.indexOf('?');
+    var query = url.substring(pos + 1);
+    var params = query.split("&");
+    for (var i = 0; i < params.length; i++) {
+        var namevalue = params[i].split("=");
+        if (namevalue.length != 2) {
+            continue;
+        }
+        if (namevalue[0] == 'execute_index') {
+            execute_index = parseInt(namevalue[1]);
+        }
+    }
+	
+    var data_rule_keys = callback('crawler_exebase_get_data_rule_keys', execute_index).split(":");
+	if(data_rule_keys.length > 1) {
+		var ops = document.getElementById('rules').options;
+		for (i = 0; i < data_rule_keys.length; i++) {
+			ops.add(new Option(data_rule_keys[i], i));
+		}
+		document.getElementById('rules').setAttribute('onchange', 'on_select_rule(' + execute_index + ', this.value);');
+		document.getElementById("div_rules").style.display = '';
+	}
+	
+	on_select_rule(execute_index, 0);
+}
+
+function on_select_rule(execute_index, rule_index) {
+	document.getElementById('btn_ok').setAttribute('onclick', 'exp(' + execute_index + ',' + rule_index + ');');
+	callback('crawler_queue_result_select_rule', execute_index, parseInt(rule_index));
+
+	var table = document.getElementById('fields');
+    var len = table.rows.length;
+    for (var i = 1; i < len; i++) {
+		table.deleteRow(1);
+    }
+	
+	var context_num = callback('crawler_get_task_context_field_count');
+	for (i = 0; i < context_num; i++) {
+        var row = table.insertRow(i + 1);
+        var cell = row.insertCell(0);
+        cell.innerHTML = callback('crawler_get_task_context_field_name', i);
+		
+        var h = '<input id="check_out_' + i + '" type="checkbox" checked="checked"/>';
+		cell = row.insertCell(1);
+        cell.innerHTML = h;
+	}
+	
+	var field_num = callback('crawler_get_task_leaf_rule_field_num');
+    for (i = 0; i < field_num; i++) {
+        var row = table.insertRow(i + context_num + 1);
+        var cell = row.insertCell(0);
+        cell.innerHTML = callback('crawler_get_task_leaf_rule_field_name', i);
+		
+        var h = '<input id="check_out_' + (i + context_num) + '" type="checkbox" checked="checked"/>';
+		cell = row.insertCell(1);
+        cell.innerHTML = h;
+    }
+}
+
+function select_file() {
+    file_path = crawler_get_select_file(0, 'txt', '文本文件');
+    if (file_path != '') {
+        document.getElementById("path").value = file_path;
+    }
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:20px;margin-top:20px;">
+	<div>
+		<div>
+            文件路径
+            <input id="path" type="text" style="width:450px;"/>
+            <input type="button" value="文件" onclick="select_file();"/>
+        </div>
+		<div style="margin-top:10px;">
+			输出
+			<input type="radio" name="out_type" id="out_csv" checked/>CSV
+			<input type="radio" name="out_type" id="out_sep" />分隔
+			<input type="radio" name="out_type" id="out_format" />格式化
+			<input id="out_param" type="text" style="width:300px;" title="tag:<tag1>...<tag2>...<tag3>"/>
+		</div>
+		<div style="margin-top:10px;display:none;" id="div_rules">
+			规则
+			<select id="rules" style="width:200px;">
+			</select>
+		</div>
+        <table id="fields" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;margin-top:10px;" bordercolor="#000000"><tbody>
+            <tr style="background-color:#cccccc">
+               <td>字段</td>
+               <td>输出</td>
+            </tr>
+	    </tbody></table>
+	</div>
+	
+	<div style="margin-top:10px;">
+		<input id="btn_ok" type="button" style="width:80px;" value="开始导出"/>
+		<input type="button" value="退出" onclick="crawler_popup_wnd_hide();" style="width:50px;margin-left:20px;"/>
+	</div>
+
+    <div style="margin-top:10px;">
+        <textarea id="result" style="width:100%;" rows="33"></textarea>
+    </div>
+</body>
+</html>

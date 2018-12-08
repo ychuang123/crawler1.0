@@ -1,0 +1,100 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+td
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+function refresh() {
+
+    var table = document.getElementById('list');
+    var len = table.rows.length;
+    for (var i = 1; i < len; i++) {
+        table.deleteRow(1);
+    }
+
+    var count = callback('crawler_field_set_get_count');
+    for (i = 0; i < count; i++) {
+        
+        var row = table.insertRow(i + 1);
+        //row.setAttribute('bgcolor', '#CCCCCC');
+
+        var cell = row.insertCell(0);
+        cell.innerHTML = '<input id="check_' + i + '" type="checkbox"/>' + (i+1);
+
+        cell = row.insertCell(1);
+        cell.innerHTML = callback('crawler_field_set_get_name', i);
+
+        cell = row.insertCell(2);
+        cell.innerHTML = callback('crawler_field_set_get_fields', i);
+    }
+}
+
+function on_cmd(cmd) {
+    var table = document.getElementById('list');
+    var count = callback('crawler_field_set_get_count');
+    var selected = new Array();
+    var select_num = 0;
+    for (i = 0; i < count; i++) {
+        if(cmd == 'select_all') {
+            document.getElementById('check_' + i).checked = true;
+        } else if (cmd == 'unselect') {
+            document.getElementById('check_' + i).checked = false;
+        } else if (document.getElementById('check_' + i).checked) {
+            selected[select_num] = i;
+            select_num += 1;
+        }
+    }
+
+    if(cmd == 'mode_field_set') {
+        if (select_num == 0) {
+            alert('请选择字段模板！');
+            return;
+        }
+        if (select_num > 1) {
+            alert('请选择一个字段模板！');
+            return;
+        }
+		crawler_popup_wnd_show('修改字段模板', 'popup_field_set_edit.html?field_set_index=' + selected[0], 600, 200);
+    } else if (cmd == 'del_field_set') {
+        if (select_num == 0) {
+            alert('请选择字段模板！');
+            return;
+        }
+        if (crawl_prompt_yes_or_no('是否要删除选择的 ' + select_num + ' 个字段模板？') == 0) {
+            return;
+        }
+        for (i = 0; i < select_num; i++) {
+            var orig_index = selected[i];
+            var real_index = orig_index - i;
+            callback('crawler_field_set_del', real_index);
+        }
+        refresh();
+    }
+}
+
+</script>
+</head>
+<body onLoad="refresh();" style="margin-top:6px;margin-left:6px;margin-right:8px;">
+<table id="list" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000"><tbody>
+<tr style="background-color:#cccccc">
+<td width="100">序号</td>
+<td width="200">模板名称</td>
+<td width="200">字段集合</td>
+</tr>
+</tbody></table>
+</body>
+</html>

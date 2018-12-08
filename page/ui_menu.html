@@ -1,0 +1,164 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+[my_attr_menu_unselect]
+{
+    color: white;
+	background-color: #87A3C9;
+}
+[my_attr_menu_selected]
+{
+	color: #000000;
+    background-color:#00E3E3;
+}
+</style>
+
+<script type="text/javascript">
+
+function update(sel_menu) {
+    var menu_ids = crawler_get_menu_ids();
+    var id_array = menu_ids.split(",");
+    for (var i = 0; i < id_array.length; i++) {
+        var id = id_array[i];
+        if (id == sel_menu) {
+            document.getElementById(id).removeAttribute("my_attr_menu_unselect");
+            document.getElementById(id).setAttribute("my_attr_menu_selected", "on");
+        } else {
+            document.getElementById(id).removeAttribute("my_attr_menu_selected");
+            document.getElementById(id).setAttribute("my_attr_menu_unselect", "on");
+        }
+    }
+}
+
+function load() {
+    var html = '';
+    var menu_ids = crawler_get_menu_ids();
+    var id_array = menu_ids.split(",");
+    for (var i = 0; i < id_array.length; i++) {
+        var id = id_array[i];
+		var mtop = i == 0 ? 10 : 15;
+		var menu_select = i == 0 ? ' my_attr_menu_selected="on"' : ' my_attr_menu_unselect="on"';
+		
+        html += '<div';
+        html += ' style="margin-top:' + mtop + 'px;margin-left:4px;">';
+        html += '<input type="button" id="' + id + '"';
+        html += ' value="' + crawler_get_menu_name(id) + '"';
+        html += ' title="' + crawler_get_menu_title(id) + '"';
+        html += ' onclick="crawler_enter_menu(\'' + id + '\');"';
+        html += ' style="width:80px;" ' + menu_select + '/></div>';
+    }
+    document.getElementById("b").innerHTML = html;
+}
+
+function tasktest_result_append() {
+    crawler_active_ui_runjs(5,'append();');
+}
+
+function exedebug_result_append() {
+    crawler_active_ui_runjs(2, 'append();');
+}
+
+function exerun_log_append() {
+    crawler_active_ui_runjs(4, 'append();');
+}
+
+function get_toolbar_shell_index(key) {
+    crawler_set_js_return_int(key, 1);
+}
+
+function get_study_web_shell_index_1(key) {
+    crawler_set_js_return_int(key, 3);
+}
+
+function get_study_web_shell_index_2(key) {
+    var m = crawler_get_ui_model();
+    if (m == 'uimodel_rule_define_study_double' || m == 'uimodel_rule_define_study_double_show_crawled') {
+        crawler_set_js_return_int(key, 5);
+    } else {
+        crawler_set_js_return_int(key, -1);
+    }
+}
+
+function get_rule_define_postfix(key) {
+    var m = crawler_get_ui_model();
+    if (m == 'uimodel_ext_data' || m == 'uimodel_ext_data_show_crawled') {
+        crawler_set_js_return_str(key, '');
+    } else {
+        crawler_set_js_return_str(key, '_ruledefine');
+    }
+}
+
+function get_show_crawled_submenu_id(key) {
+    var m = crawler_get_ui_model();
+    if (m == 'uimodel_ext_data' || m == 'uimodel_ext_data_show_crawled') {
+        if (m == 'uimodel_ext_data_show_crawled') {
+            crawler_active_ui_runjs(4, 'refresh();');
+        }
+        crawler_set_js_return_str(key, 'uimodel_ext_data_show_crawled');
+    } else if (m == 'uimodel_rule_define_study_single' || m == 'uimodel_rule_define_study_single_show_crawled') {
+		if (m == 'uimodel_rule_define_study_single_show_crawled') {
+			crawler_active_ui_runjs(4, 'refresh();');
+		}
+        crawler_set_js_return_str(key, 'uimodel_rule_define_study_single_show_crawled');
+    } else {
+		if (m == 'uimodel_rule_define_study_double_show_crawled') {
+			crawler_active_ui_runjs(6, 'refresh();');
+		}
+        crawler_set_js_return_str(key, 'uimodel_rule_define_study_double_show_crawled');
+    }
+}
+
+function endWith(targetStr, endStr) {
+    var d = targetStr.length - endStr.length;
+    return d>=0 && targetStr.lastIndexOf(endStr)==d;
+}
+
+function try_enter_study(study_double_page) {
+    var study_url_3 = crawler_get_navigation_url(3);
+    if (study_url_3 == '' || endWith(study_url_3, 'ui_empty.html')) {
+        return "请浏览网页";
+    }
+    if (study_double_page) {
+        var study_url_5 = crawler_get_navigation_url(5);
+        if (study_url_5 == '' || endWith(study_url_5, 'ui_empty.html')) {
+            return "请浏览网页2";
+        }
+    }
+    return "";
+}
+
+function on_extdata_exit() {
+    callback('crawler_stop_study', 3, 0);
+}
+
+function on_study_exit(study_double_page) {
+    var study_shell_2 = study_double_page ? 5 : 0;
+    callback('crawler_stop_study', 3, study_shell_2);
+
+    crawler_active_ui_runjs(2, 'updateUrl("http://");');
+    crawler_navigation_url(3, callback('crawler_get_page_url', 'ui_empty.html'));
+
+    if(study_double_page) {
+        crawler_active_ui_runjs(4, 'updateUrl("http://");');
+        crawler_navigation_url(5, callback('crawler_get_page_url', 'ui_empty.html'));
+    }
+}
+
+</script>
+</head>
+<body onLoad="load();" bgcolor="#666" style="margin-top:6px;margin-left:6px;margin-right:8px;">
+<div style="margin-top:7px;margin-left:6px;">
+<font style="FONT-FAMILY:楷体;font-size:20px;color:#0F0;">小白采集</font>
+</div>
+<div id="b">
+</div>
+</body>
+</html>

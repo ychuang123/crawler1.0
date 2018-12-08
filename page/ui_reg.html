@@ -1,0 +1,59 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+
+<script type="text/javascript">
+
+function refresh() {
+    document.getElementById('auth_status').innerHTML = callback('crawler_get_auth_status');
+	document.getElementById('auth_msg').innerHTML = callback('crawler_get_auth_msg');
+	document.getElementById('auth_code').innerHTML = callback('crawler_get_auth_code');
+    document.getElementById('auth_start').innerHTML = callback('crawler_get_auth_start');
+    document.getElementById('auth_stop').innerHTML = callback('crawler_get_auth_stop');
+}
+
+</script>
+</head>
+
+<body onLoad="refresh()" style="margin-top:6px;margin-left:6px;margin-right:8px;">
+	<table cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000"><tbody>
+		<tr>
+			<td width="150" bgcolor="#CCCCCC">授权状态</td>
+			<td width="800" id="auth_status"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#CCCCCC">状态描述</td>
+			<td id="auth_msg"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#CCCCCC">授权码</td>
+			<td id="auth_code"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#CCCCCC">授权开始</td>
+			<td id="auth_start"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#CCCCCC">授权结束</td>
+			<td id="auth_stop"></td>
+		</tr>
+	</tbody></table>
+</body>
+</html>

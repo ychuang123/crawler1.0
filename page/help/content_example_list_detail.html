@@ -1,0 +1,34 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+body
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: black;
+}
+</style>
+</head>
+<body>
+<div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+8.1 采集的新闻列表数据中含有详情页网址，大多数情况需要继续采集详情页数据
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+有 2 种方式采集详情页数据：
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+1. 从列表页采集到详情页网址后，自动采集详情页数据。在一个采集任务中完成
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+2. 先采集列表页数据，手工导出详情页网址，另启一个任务采集详情页数据。中间有人工操作
+</div><div style="margin-top:20px;margin-left:8px;margin-right:10px;">
+本例以新浪滚动新闻为例，介绍第1种方式如何配置和采集
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+本例的目标网页是 https://news.sina.com.cn/roll，同 8.1
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+采集对象为新闻列表和新闻详情
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+新闻列表采集字段为标题、详情页网址、时间，使用 8.1 的列表页采集规则，不再配置列表页规则
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+新闻详情采集字段为标题、时间、来源、正文
+</div>
+</body>
+</html>

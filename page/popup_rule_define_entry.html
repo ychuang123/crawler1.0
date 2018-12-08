@@ -1,0 +1,69 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function enterRuleDefine()
+{
+    var rule_type = document.getElementById("rule_type").value;
+    var page_num = document.getElementById("page_num").value;
+    
+    var err = callback('crawler_enter_rule_define', rule_type, page_num);
+    if (err != "") {
+        alert(err);
+        return;
+    }
+
+    if (page_num == '1') {
+        crawler_enter_ui_model('uimodel_rule_define_browser_single');
+    } else {
+        crawler_enter_ui_model('uimodel_rule_define_browser_double');
+    }
+
+	crawler_popup_wnd_hide();
+}
+
+</script>
+</head>
+
+<body bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+
+	<div>
+		规则类型
+		<select id="rule_type" style="width:120px;">
+			<option value="data_rule">数据抽取规则</option>
+			<option value="ui_oper">网页交互操作</option>
+			<option value="verify_code">验证码识别</option>
+		</select>
+	</div>
+	
+	<div style="margin-top:10px;">
+		网页数量
+		<select id="page_num" style="width:120px;">
+			<option value="1">单网页</option>
+			<option value="2">双网页</option>
+		</select>
+	</div>
+	
+	<div style="margin-top:15px;">
+		<input type="button" value="确定" onclick="enterRuleDefine();"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+</body>
+</html>

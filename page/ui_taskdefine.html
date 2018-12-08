@@ -1,0 +1,152 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+td
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function on_check(id) {
+
+    var old = callback('crawler_set_program_study_select_id', '');
+    if (old != '') {
+        document.getElementById(old).checked = false;
+    }
+
+    if (document.getElementById(id).checked) {
+        callback('crawler_set_program_study_select_id', id);
+    }
+}
+
+function refresh() {
+    callback('crawler_set_program_study_select_id', '');
+    var seed_types = new Array('login_web', 'logout_web', 'verfiy_identity', 'crawl_data');
+	var seed_type_shows = new Array('登录网站', '注销登录', '验证码识别', '采集数据');
+    for (var type_index = 0; type_index < 4; type_index++) {
+        var seed_type = seed_types[type_index];
+		var seed_type_show = seed_type_shows[type_index];
+        var table = document.getElementById(seed_type);
+        var len = table.rows.length;
+        for (var i = 0; i < len; i++) {
+            table.deleteRow(0);
+        }
+
+        var total_step = 0;
+        var seed_count = callback('crawler_get_program_seed_count', seed_type);
+		if(seed_count == 0) {
+			table.style.display = 'none';
+			continue;
+		}
+		
+		table.style.display = '';
+        for (var seed_index = 0; seed_index < seed_count; seed_index++) {
+            var row = table.insertRow(seed_index);
+            var cell = row.insertCell(0);
+            cell.setAttribute('width', '100%');
+
+            var seed_table_id = seed_type + '_' + seed_index;
+            var html = '<table id="' + seed_table_id + '" width="100%"><tbody></tbody></table>';
+            cell.innerHTML = html;
+
+            var seed_table = document.getElementById(seed_table_id);
+            var step_count = callback('crawler_get_program_seed_step_count', seed_type, seed_index);
+            var row_count = 0;
+            for (var step_index = 0; step_index < step_count; step_index++) {
+                total_step += 1;
+                if (total_step > 1) { // 空行
+                    row = seed_table.insertRow(row_count);
+                    row_count += 1;
+                    cell = row.insertCell(0);
+                    cell.innerHTML = '&nbsp;';
+                }
+
+                row = seed_table.insertRow(row_count);
+                row_count += 1;
+                cell = row.insertCell(0);
+                cell.setAttribute('width', '100%');
+
+                var display_name = callback('crawler_get_program_seed_step_display_name', seed_type, seed_index, step_index);
+                var check_id = 'check_' + seed_table_id + '_' + step_index;
+                html = '<input id="' + check_id + '" onclick="on_check(\'' + check_id + '\');" type="checkbox"/>' + seed_type_show + ' 种子' + (seed_index + 1) + ' 步骤' + (step_index + 1) + ' ' + display_name;
+                cell.innerHTML = html;
+
+                row = seed_table.insertRow(row_count);
+                row_count += 1;
+                cell = row.insertCell(0);
+                cell.setAttribute('width', '100%');
+
+                var rule_table_id = seed_table_id + '_' + step_index;
+                html = '<table id="' + rule_table_id + '" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000"><tbody></tbody></table>';
+                cell.innerHTML = html;
+
+                var rule_table = document.getElementById(rule_table_id);
+                row = rule_table.insertRow(0);
+                row.setAttribute('bgcolor', '#CCCCCC');
+                cell = row.insertCell(0);
+                cell.setAttribute('width', '100');
+                cell.innerHTML = '规则名称';
+
+                cell = row.insertCell(1);
+                cell.setAttribute('width', '100');
+                cell.innerHTML = '规则类型';
+
+                cell = row.insertCell(2);
+                cell.setAttribute('width', '50');
+                cell.innerHTML = '翻页';
+
+                cell = row.insertCell(3);
+                cell.setAttribute('width', '800');
+                cell.innerHTML = '字段';
+
+                var rule_count = callback('crawler_get_program_seed_step_rule_count', seed_type, seed_index, step_index);
+                for (var rule_index = 0; rule_index < rule_count; rule_index++) {
+                    row = rule_table.insertRow(rule_index + 1);
+                    cell = row.insertCell(0);
+                    check_id = 'check_' + rule_table_id + '_' + rule_index;
+                    html = '<input id="' + check_id + '" onclick="on_check(\'' + check_id + '\');" type="checkbox"/>' + callback('crawler_get_program_seed_step_rule_name', seed_type, seed_index, step_index, rule_index);
+                    cell.innerHTML = html;
+
+                    cell = row.insertCell(1);
+                    cell.innerHTML = callback('crawler_get_program_seed_step_rule_type', seed_type, seed_index, step_index, rule_index);
+
+                    cell = row.insertCell(2);
+                    cell.innerHTML = callback('crawler_get_program_seed_step_rule_turnpage', seed_type, seed_index, step_index, rule_index);
+
+                    cell = row.insertCell(3);
+                    cell.innerHTML = callback('crawler_get_program_seed_step_rule_fields', seed_type, seed_index, step_index, rule_index);
+                }
+            }
+        }
+    }
+}
+</script>
+</head>
+<body onLoad="refresh();" style="margin-left:6px;margin-right:8px;">
+
+<table id="login_web" width="100%" style="margin-top:20px;"><tbody>
+</tbody></table>
+
+<table id="logout_web" width="100%" style="margin-top:20px;"><tbody>
+</tbody></table>
+
+<table id="verfiy_identity" width="100%" style="margin-top:20px;"><tbody>
+</tbody></table>
+
+<table id="crawl_data" width="100%" style="margin-top:20px;"><tbody>
+</tbody></table>
+
+</body>
+</html>

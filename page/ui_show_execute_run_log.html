@@ -1,0 +1,58 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function load() {
+	var execute_index = callback('crawler_get_show_execute_run_log_index');
+	var execute = callback('crawler_exebase_get_name', execute_index);
+	document.getElementById('execute').innerHTML = '任务：' + execute;
+	callback('crawler_show_execute_run_log', execute);
+}
+
+function append() {
+    var line = callback('crawler_get_execute_run_log');
+    var text = document.getElementById('result').value;
+    if (text != '') {
+        text += '\n';
+    }
+    if (text.length > 10000) {
+        text = '';
+    }
+    text += line;
+
+    document.getElementById('result').value = text;
+}
+
+function on_close() {
+	callback('crawler_show_execute_run_log', '');
+	crawler_enter_ui_model('uimodel_exe_list');
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#999" style="margin-top:6px;margin-left:6px;margin-right:8px;">
+	<div>
+		<span id="execute"></span>
+        <input type="button" value="关闭日志" style="margin-left:100px;width:90px;" onclick="on_close();"/>
+	</div>
+	<textarea id="result" style="height:100%;width:100%;margin-top:6px;" rows="80" cols="300"></textarea>
+</body>
+</html>

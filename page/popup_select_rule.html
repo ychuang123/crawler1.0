@@ -1,0 +1,90 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function load() {
+
+	var ops = document.getElementById('rule_type').options;
+	ops.length = 0;
+	
+	var seed_type = callback('crawler_get_program_select_step_seed_types');
+	if(seed_type == 'crawl_data') {
+		ops.add(new Option('数据抽取规则', 'data_rule'));
+		ops.add(new Option('网页交互操作', 'ui_oper'));
+		on_select_rule_type('data_rule');
+		
+	} else if(seed_type == 'login_web' || seed_type == 'logout_web') {
+		ops.add(new Option('网页交互操作', 'ui_oper'));
+		on_select_rule_type('ui_oper');
+		
+	} else if(seed_type == 'verfiy_identity') {
+        ops.add(new Option('验证码识别', 'verify_code'));
+        on_select_rule_type('verify_code');
+	}
+}
+
+function on_select_rule_type(rule_type) {
+    var ops = document.getElementById('rule_name').options;
+	ops.length = 0;
+	
+	var names = callback('crawler_get_rule_names_by_type', rule_type).split(",");
+    for (var i = 0; i < names.length; i++) {
+		ops.add(new Option(names[i], names[i]));
+	}
+}
+
+function commit() {
+	var rule_name = document.getElementById('rule_name').value;
+	if(rule_name == '') {
+		alert('请选择规则！');
+		return;
+	}
+	
+	var err = callback('crawler_add_program_study_step_rule', rule_name);
+	if(err != '') {
+		alert(err);
+	}
+	
+	crawler_popup_wnd_hide();
+    crawler_active_ui_runjs(2, 'refresh();');
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+	<div>
+		规则类型
+		<select id="rule_type" style="width:200px;" onchange="on_select_rule_type(this.value);">
+		</select>
+	</div>
+	
+	<div style="margin-top:5px;">
+		规则名称
+		<select id="rule_name" style="width:200px;">
+		</select>
+	</div>
+	
+	<div style="margin-top:10px;">
+		<input type="button" value="确定" onclick="commit();"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+</body>
+</html>

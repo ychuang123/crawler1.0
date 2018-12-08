@@ -1,0 +1,72 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+    function commit(execute_index) {
+        var rule_index = document.getElementById("rules").value;
+        callback('crawler_queue_result_select_rule', execute_index, parseInt(rule_index));
+
+        crawler_popup_wnd_hide();
+        crawler_enter_ui_model('uimodel_data_rec_query');
+    }
+
+function load() {
+    var execute_index = -1;
+    var url = window.location.href;
+    var pos = url.indexOf('?');
+    var query = url.substring(pos + 1);
+    var params = query.split("&");
+    for (var i = 0; i < params.length; i++) {
+        var namevalue = params[i].split("=");
+        if (namevalue.length != 2) {
+            continue;
+        }
+        if (namevalue[0] == 'execute_index') {
+            execute_index = parseInt(namevalue[1]);
+        }
+    }
+
+    var ops = document.getElementById('rules').options;
+    ops.length = 0;
+
+    var data_rule_keys = callback('crawler_exebase_get_data_rule_keys', execute_index).split(":");
+    for (i = 0; i < data_rule_keys.length; i++) {
+        ops.add(new Option(data_rule_keys[i], i));
+    }
+
+    document.getElementById('btn_ok').setAttribute('onclick', 'commit(' + execute_index + ');');
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:40px;margin-top:40px;">
+	<div>
+		规则
+		<select id="rules" style="width:300px;">
+		</select>
+	</div>
+	
+	<div style="margin-top:10px;">
+		<input id="btn_ok" type="button" style="width:50px;" value="确定"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="width:50px;margin-left:20px;"/>
+	</div>
+</body>
+</html>

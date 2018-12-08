@@ -1,0 +1,99 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+body
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: black;
+}
+</style>
+</head>
+<body>
+<div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+系统参数
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+对于布尔值类型的参数，0表示false，1表示true
+</div><div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+下面提到的采集稳定性，指的是采集失败（从网页采集不到数据）情况发生的多少
+</div>
+<ol>
+	<li>
+		点击 <font style="color:blue;">模块</font> 下拉选择框，选择系统参数，进入系统参数列表界面
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		参数如果配置过，其值在设置列中显示，该参数将使用配置的值。如果没有配置过，则使用默认列显示的默认值
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		参数配置后，如果是立即生效，则程序随后会立即使用配置的值，否则，程序下次启动后才会使用配置的值
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		参数如下
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">加载时间</font>：等待网页加载的时间。从加载网页开始，经过该时间后才开始抽取数据
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		该值越大，采集越稳定，但采集效率会变低。单位为秒
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">失败等待时间</font>：如果从网页抽取数据失败，重试的持续时间。超过该时间仍抽取失败，则结束抽取
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		该值越大，采集越稳定，但采集效率会变低。单位为秒
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">点击前等待时间</font>：点击按钮前等待时间
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		该值越大，采集越稳定，但采集效率会变低。单位为秒
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">点击后等待时间</font>：点击按钮后等待时间
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		该值越大，采集越稳定，但采集效率会变低。单位为秒
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">下载图片</font>：加载网页时是否要下载网页中的图片
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		启动该参数，采集效率会变低
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">无数据停止翻页</font>：对于有翻页的任务，当没有采集到有效的数据记录时，是否停止翻页
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		启动该参数，可能会丢失一些数据，但采集效率会变高
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">登录时长</font>：对于要登录的任务，登录后会话（cookie）连续使用时间。超过该时间后重新登录
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		该值越大，登录就越稀疏，验证码的出现可能会更频繁。该值太小，可能会因频繁登录而被目标网站屏蔽。单位为秒
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">采集间隔</font>：同一任务的网页采集间隔
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		该值越大，采集越稳定，被目标网站屏蔽的可能性变小，但采集效率会变低。单位为秒
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">爬虫数量</font>：任务采集子进程的数量
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		该值越大，采集效率会变高，但系统负载会变大，采集稳定性会变低
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">服务端IP</font>：本程序启动的调度服务绑定的本机IP
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">服务端端口</font>：本程序启动的调度服务监听的 tcp 端口
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		确保该端口没有被占用
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">工作目录</font>：采集任务及抽取到的数据保存的目录。如果没有指定，则以程序所在目录的workspace子目录为工作目录
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		该目录包含下面子目录
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		base_conf：基础配置数据
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		execute_data：采集到的任务数据
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		execute_define：任务定义
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		program_define：程序定义
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		rule_define：规则定义
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">显示爬虫UI</font>：任务采集子进程是否显示UI
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		除非排查问题，否则不要启动该参数
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">打印下载url</font>：是否在日志中打印下载url
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		除非排查问题，否则不要启动该参数
+		</div>
+	</li>
+</ol>
+<img style="margin-left:10px;" border="1" src="img/setting_params.png"/>
+</body>
+</html>

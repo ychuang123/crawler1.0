@@ -1,0 +1,130 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+    function load() {
+        document.getElementById('path').value = callback('crawler_get_filesystem_path');
+
+        var table = document.getElementById('fields');
+        var context_num = callback('crawler_get_task_context_field_count');
+        for (i = 0; i < context_num; i++) {
+            var row = table.insertRow(i + 1);
+            var cell = row.insertCell(0);
+
+            var field = callback('crawler_get_task_context_field_name', i);
+            cell.innerHTML = field;
+
+            var out = callback('crawler_get_filesystem_out', 1, field);
+            var h = '<input id="check_out_' + i + '" type="checkbox"' + (out == 1 ? ' checked="checked"' : '') + '/>';
+            cell = row.insertCell(1);
+            cell.innerHTML = h;
+        }
+
+        var field_num = callback('crawler_get_task_leaf_rule_field_num');
+        for (i = 0; i < field_num; i++) {
+            var row = table.insertRow(i + context_num + 1);
+            var cell = row.insertCell(0);
+            
+            var field = callback('crawler_get_task_leaf_rule_field_name', i);
+            cell.innerHTML = field;
+
+            var out = callback('crawler_get_filesystem_out', 0, field);
+            var h = '<input id="check_out_' + (i + context_num) + '" type="checkbox"' + (out == 1 ? ' checked="checked"' : '') + '/>';
+            cell = row.insertCell(1);
+            cell.innerHTML = h;
+        }
+    }
+
+    function onsave() {
+        var path = document.getElementById('path').value;
+        if (path == '') {
+            alert('请输入文件路径！');
+            return;
+        }
+
+        var table = document.getElementById('fields');
+
+        var contexts = '';
+        var context_num = callback('crawler_get_task_context_field_count');
+        for (i = 0; i < context_num; i++) {
+            if (document.getElementById('check_out_' + i).checked) {
+                if (contexts != '') {
+                    contexts += ' ';
+                }
+                contexts += callback('crawler_get_task_context_field_name', i);
+            }
+        }
+
+        var fields = '';
+        var field_num = callback('crawler_get_task_leaf_rule_field_num');
+        for (i = 0; i < field_num; i++) {
+            if (document.getElementById('check_out_' + (context_num + i)).checked) {
+                if (fields != '') {
+                    fields += ' ';
+                }
+                fields += callback('crawler_get_task_leaf_rule_field_name', i);
+            }
+        }
+
+        if (contexts == '' && fields == '') {
+            alert('请选择保存字段！');
+            return;
+        }
+
+        var err = callback('crawler_set_filesystem_conf', path, contexts, fields);
+        if (err.length > 0) {
+            alert(err);
+            return;
+        }
+        alert('设置成功');
+    }
+
+    function select_file() {
+        file_path = crawler_get_select_file(0, 'txt', '文本文件');
+        if (file_path != '') {
+            document.getElementById("path").value = file_path;
+        }
+    }
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:10px;margin-top:10px;">
+    
+    <div>
+        <div>
+            文件路径
+            <input id="path" type="text" style="width:450px;"/>
+            <input type="button" value="文件" onclick="select_file();"/>
+        </div>
+        <table id="fields" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;margin-top:10px;" bordercolor="#000000"><tbody>
+            <tr style="background-color:#cccccc">
+               <td>字段</td>
+               <td>输出</td>
+            </tr>
+	    </tbody></table>
+    </div>
+	
+	<div style="margin-top:10px;">
+		<input type="button" value="确定" onclick="onsave();"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+._choice{
+    border:1px green solid;
+    cursor:pointer;
+}
+._selected{
+    border:3px black solid;
+	background-color:Yellow;
+}

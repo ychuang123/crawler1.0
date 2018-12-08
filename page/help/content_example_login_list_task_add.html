@@ -1,0 +1,70 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+body
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: black;
+}
+</style>
+</head>
+<body>
+<div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+定义程序的运行，包括启动方式、运行需要的种子URL等参数
+</div>
+<ol>
+	<li>
+		点击 <font style="color:blue;">增加任务</font> 按钮，弹出 <font style="color:blue;">选择程序</font> 对话框
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">程序</font> 下拉选择框，选择新浪微博列表
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">确定</font> 按钮，弹出 <font style="color:blue;">增加任务</font> 对话框
+	</li>
+	<li style="margin-top:8px;">
+		输入任务名称：新浪微博列表
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">运行类型</font> 下拉选择框，选择手动运行
+	</li>
+	<li style="margin-top:8px;">
+		输入登录种子URL：http://weibo.com/
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">文件</font> 按钮，弹出本地文件选择对话框，选择采集数据种子ULR文件
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		选择的文件内容必须是 ANSI 编码格式的
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		选择的文件内容为新浪微博关键词搜索URL，每一行为一个种子URL，比如：
+		</div>
+		<img style="margin-left:4px;margin-top:6px;" border="1" src="img/example_login_list_task_define_seed.png"/>
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		第1行采集 <font style="color:blue;">国家主义</font> 第1页列表数据
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		后面6行采集 <font style="color:blue;">自由贸易</font> 和<font style="color:blue;">改革开放</font> 在2018年8-10月的微博
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		使用 rep 指令达到翻页目标，加上时间分解，能够极大地提高采集量
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		输入登录账号和密码，逗号分隔
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果有多个账户，可以写入本地文件，点击 <font style="color:blue;">文件</font> 按钮选择该文件
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		选择的文件内容必须是 ANSI 编码格式的
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		多个账户轮流使用，能够缓解验证码的频繁出现
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">确定</font> 按钮提交
+		</div>
+	</li>
+</ol>
+<img style="margin-left:10px;" border="1" src="img/example_login_list_task_add.png"/>
+<img style="margin-left:10px;margin-top:10px;" border="1" src="img/example_login_list_task_define.png"/>
+</body>
+</html>

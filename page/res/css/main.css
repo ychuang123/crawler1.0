@@ -1,0 +1,37 @@
+A {
+	COLOR: #000000;
+	TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #000000
+}
+HTML 
+{
+	height:90%;
+}
+BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 14px; PADDING-BOTTOM: 0px; COLOR: #000000; PADDING-TOP: 0px; FONT-FAMILY: "Trebuchet MS", sans-serif, arial;
+	margin-top:0px; margin-left:1em; margin-right:1em; height:90%;}
+A.subtleLink {
+	FONT-SIZE: 14px; COLOR: #555555
+}
+A.subtleLink:hover {
+	COLOR: #333333
+}
+._control, input
+{
+	border:1px gray solid;
+}
+iframe 
+{
+    border:1px gray solid;
+    margin:0px;
+}
+._choice{
+    border:1px green solid;
+    cursor:pointer;
+}
+._selected{
+    border:3px black solid;
+	background-color:Yellow;
+}

@@ -1,0 +1,277 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function getSeedTypeChName(type) {
+	if(type == 'crawl_data') {
+		return '采集数据';
+	}
+	if(type == 'login_web') {
+		return '登录网站';
+	}
+	if(type == 'logout_web') {
+		return '注销登录';
+	}
+	if(type == 'verfiy_identity') {
+		return '验证码识别';
+	}
+	return type;
+}
+
+function load() {
+    var url = window.location.href;
+    var pos = url.indexOf('?');
+    var baseurl = url;
+    var test = 0;
+    if (pos > 0) {
+        baseurl = url.substring(0, pos);
+        var query = url.substring(pos + 1);
+        var params = query.split("&");
+        for (var i = 0; i < params.length; i++) {
+            var namevalue = params[i].split("=");
+            if (namevalue.length != 2) {
+                continue;
+            }
+            if (namevalue[0] == 'test') {
+                test = parseInt(namevalue[1]);
+            }
+        }
+    }
+	
+    if (test == 1) {
+		document.getElementById("div_save_html").style.display = 'none';
+		document.getElementById("div_save_img").style.display = 'none';
+        document.getElementById("div_run_type").style.display = 'none';
+		document.getElementById("div_exe_program").style.display = 'none';
+        document.getElementById("div_exe_name").style.display = 'none';
+    } else {
+		document.getElementById('program_name').value = callback('crawler_get_study_execute_program');
+        document.getElementById('execute_name').value = callback('crawler_get_study_execute_name');
+		document.getElementById('save_html').checked = callback('crawler_get_study_execute_save_html') == 1;
+		document.getElementById('save_img').checked = callback('crawler_get_study_execute_save_img') == 1;
+        document.getElementById("run_type").value = callback('crawler_get_study_execute_run_type');
+        document.getElementById("run_type_param").value = callback('crawler_get_study_execute_run_type_param');
+		
+		document.getElementById('program_name').setAttribute('readonly', 'readonly');
+    }
+    document.getElementById("id_ok").setAttribute('onclick', 'commit(' + test + ');');
+
+    var seed_count = callback('crawler_get_study_execute_seed_url_count');
+    var table_seed = document.getElementById("table_seed_url");
+    if (seed_count <= 0) {
+        document.getElementById("div_seed_url").style.display = 'none';
+    } else {
+        for (var i = 0; i < seed_count; i++) {
+            row = table_seed.insertRow(i + 1);
+            cell = row.insertCell(0);
+            cell.innerHTML = getSeedTypeChName(callback('crawler_get_study_execute_seed_url_type', i));
+
+            cell = row.insertCell(1);
+            cell.innerHTML = callback('crawler_get_study_execute_seed_url_index', i) + 1;
+
+            cell = row.insertCell(2);
+            var url = callback('crawler_get_study_execute_seed_url', i);
+            var html = '<input id="seed_' + i + '" type="text" style="width:700px;" title="@file: @tag: @rep,rep_raw,start,stop,step: @input,step_index,rule_name,field1,field2:" value="' + url + '"/> <input type="button" value="文件" onclick="select_url_file(' + i + ');"/>';
+            cell.innerHTML = html;
+        }
+    }
+
+    var rule_count = callback('crawler_get_study_execute_rule_input_count');
+    var table_rule = document.getElementById("table_rule_input");
+    if (rule_count <= 0) {
+        document.getElementById("div_rule_input").style.display = 'none';
+    } else {
+        for (var i = 0; i < rule_count; i++) {
+            row = table_rule.insertRow(i + 1);
+            cell = row.insertCell(0);
+            cell.innerHTML = getSeedTypeChName(callback('crawler_get_study_execute_rule_input_type', i));
+
+            cell = row.insertCell(1);
+            cell.innerHTML = callback('crawler_get_study_execute_rule_input_seed_index', i) + 1;
+
+            cell = row.insertCell(2);
+            cell.innerHTML = callback('crawler_get_study_execute_rule_input_step_index', i) + 1;
+
+            cell = row.insertCell(3);
+            cell.innerHTML = callback('crawler_get_study_execute_rule_input_rule_name', i);
+
+			cell = row.insertCell(4);
+            cell.innerHTML = callback('crawler_get_study_execute_rule_input_rule_fields', i);
+
+            cell = row.insertCell(5);
+            var value = callback('crawler_get_study_execute_rule_input', i);
+            var html = '<input id="rule_' + i + '" type="text" style="width:200px;" title="逗号分隔 @file: @seed" value="' + value + '"/> <input type="button" value="文件" onclick="select_rule_input_file(' + i + ');"/>';
+            cell.innerHTML = html;
+        }
+    }
+}
+
+function commit(test) {
+    var execute_name = '';
+	var save_html = 0;
+	var save_img = 0;
+    var run_type = '';
+    var run_type_param = '';
+
+    if (test == 0) {
+        var execute_name = document.getElementById("execute_name").value;
+        if (execute_name == '') {
+            alert('请输入名称！');
+            return;
+        }
+
+		if(document.getElementById('save_html').checked) {
+			save_html = 1;
+		}
+		if(document.getElementById('save_img').checked) {
+			save_img = 1;
+		}
+        run_type = document.getElementById("run_type").value;
+        run_type_param = document.getElementById("run_type_param").value;
+    }
+
+    var seed_count = callback('crawler_get_study_execute_seed_url_count');
+    for (var i = 0; i < seed_count; i++) {
+        var seed_url = document.getElementById("seed_" + i).value;
+        err = callback('crawler_set_study_execute_seed_url', i, seed_url);
+        if (err != '') {
+            alert(err);
+            return;
+        }
+    }
+
+    var rule_count = callback('crawler_get_study_execute_rule_input_count');
+    for (var i = 0; i < rule_count; i++) {
+        var rule_input = document.getElementById("rule_" + i).value;
+        err = callback('crawler_set_study_execute_rule_input', i, rule_input);
+        if (err != '') {
+            alert(err);
+            return;
+        }
+    }
+
+    if (test) {
+        crawler_popup_wnd_hide();
+        crawler_enter_ui_model('uimodel_task_test');
+        return;
+    }
+
+    var msg = callback('crawler_save_execute', execute_name, save_html, save_img, run_type, run_type_param);
+    if (msg == '') {
+        alert('保存成功');
+        crawler_popup_wnd_hide();
+        crawler_active_ui_runjs(2, "refresh();");
+        return;
+    }
+
+    if (msg != "rename") {
+        alert(msg);
+    }
+}
+
+function select_url_file(index) {
+    file_path = crawler_get_select_file(1, 'txt', '文本文件');
+    if (file_path != '') {
+        document.getElementById('seed_' + index).value = '@file:' + file_path;
+    }
+}
+
+function select_rule_input_file(index) {
+	file_path = crawler_get_select_file(1, 'txt', '文本文件');
+    if (file_path != '') {
+        document.getElementById('rule_' + index).value = '@file:' + file_path;
+    }
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:10px;margin-top:10px;">
+
+	<div id="div_exe_name">
+		名称
+		<input id="execute_name" type="text" style="width:200px;"/>
+	</div>
+	
+	<div id="div_exe_program" style="margin-top:10px;">
+		程序
+		<input id="program_name" type="text" style="width:200px;"/>
+	</div>
+	<div id="div_save_html" style="margin-top:10px;">
+		保存网页
+		<input id="save_html" type="checkbox"/>
+	</div>
+	
+	<div id="div_save_img" style="margin-top:10px;">
+		保存截屏
+		<input id="save_img" type="checkbox"/>
+	</div>
+	<div id="div_run_type" style="margin-top:10px;">
+		运行方式
+        <table width="100%" cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000"><tbody>
+            <tr style="background-color:#cccccc">
+                <td>运行类型</td>
+                <td>参数</td>
+            </tr>
+            <tr>
+            <td>
+                <select id="run_type" style="margin-left:10px;width:100px;">
+			        <option value="RunTypeOneTime">手动运行</option>
+			        <option value="RunTypeOnTimer">定时运行</option>
+			        <option value="RunTypeRepeat">循环运行</option>
+		        </select>
+            </td>
+            <td><input id="run_type_param" type="text" style="width:700px;" title="定时: HH:MM,HH:MM  循环: M" /></td>
+            </tr>
+        </tbody></table>
+	</div>
+	
+    <div style="margin-top:10px;" id="div_seed_url">
+        种子URL
+        <table id="table_seed_url" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000"><tbody>
+            <tr style="background-color:#cccccc">
+                <td>种子类型</td>
+                <td>种子序号</td>
+                <td>种子URL</td>
+            </tr>
+        </tbody></table>
+    </div>
+
+    <div style="margin-top:10px;" id="div_rule_input">
+        规则输入
+        <table id="table_rule_input" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000"><tbody>
+            <tr style="background-color:#cccccc">
+                <td>种子类型</td>
+                <td>种子序号</td>
+                <td>步骤序号</td>
+                <td>规则</td>
+				<td>字段</td>
+                <td>输入参数</td>
+            </tr>
+        </tbody></table>
+    </div>
+
+    <div style="margin-top:10px;">
+		<input type="button" value="确定" id="id_ok"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+/******************** reset ********************/
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, code,
+del, dfn, em, img, q, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin:0;
+	padding:0;
+	border:0;
+	font-weight:normal;
+	font-style:inherit;
+	font-size:12px;
+	font-family:arial;
+	vertical-align:baseline;
+}
+body {margin-top:1em; margin-left:1em; margin-right:1em; margin-bottom:0px;}
+input 
+{
+	border:1px gray solid;
+	height:22px;
+}
+a:link, a:active, a:visited {
+	color:#666;
+	text-decoration:none;
+}
+a:hover {
+	color:#FF6600;
+}
+.ct-left {
+	background:url(../image/basket-right.gif) no-repeat left center;
+	float:left;
+	height:36px;
+	width:5px;
+}
+.ct-mid {
+	background:url(../image/basket-mid-gradient.gif) repeat-x left center;
+	float:left;
+	height:36px;
+}
+.ct-right {
+	background:url(../image/basket-left.gif) no-repeat left center;
+	float:left;
+	height:36px;
+	width:5px;
+}
+.ct-mid li {
+	background:url(../image/tab.gif) no-repeat left bottom;
+	display:block;
+	float:left;
+	height:36px;
+	margin-right:3px;
+	position:relative;
+	width:200px;
+}
+.txt {
+	bottom:0;
+	left:5px;
+	padding-bottom:5px;
+	position:absolute;
+	width:100%;
+}
+.tab-close {
+	background:url(../image/tab-close.gif) no-repeat left center;
+	bottom:5px;
+	cursor:pointer;
+	display:block;
+	height:16px;
+	position:absolute;
+	right:5px;
+	width:16px;
+}
+.showing
+{
+	text-decoration:underline;
+}

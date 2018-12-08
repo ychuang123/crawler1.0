@@ -1,0 +1,136 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+function load() {
+    
+    var table = document.getElementById('fields');
+	var context_num = callback('crawler_get_task_context_field_count');
+	var context_field_show_flags = callback('crawler_get_task_context_field_show_flags').split(' ');
+	for (i = 0; i < context_num; i++) {
+        var row = table.insertRow(i + 1);
+        var cell = row.insertCell(0);
+        cell.innerHTML = callback('crawler_get_task_context_field_name', i);
+		
+        var h = '<input id="check_out_' + i + '" type="checkbox"' + (context_field_show_flags[i]=='1' ? ' checked="checked"' : '') + '/>';
+		cell = row.insertCell(1);
+        cell.innerHTML = h;
+	}
+	
+	var field_num = callback('crawler_get_task_leaf_rule_field_num');
+	var field_show_flags = callback('crawler_get_task_leaf_rule_field_show_flags').split(' ');
+    for (i = 0; i < field_num; i++) {
+        var row = table.insertRow(i + context_num + 1);
+        var cell = row.insertCell(0);
+        cell.innerHTML = callback('crawler_get_task_leaf_rule_field_name', i);
+		
+        var h = '<input id="check_out_' + (i + context_num) + '" type="checkbox"' + (field_show_flags[i]=='1' ? ' checked="checked"' : '') + '/>';
+		cell = row.insertCell(1);
+        cell.innerHTML = h;
+    }
+}
+
+function onsave() {
+    var table = document.getElementById('fields');
+    
+	var select_show = false;
+    var contexts = '';
+    var context_num = callback('crawler_get_task_context_field_count');
+    for (i = 0; i < context_num; i++) {
+		if (contexts != '') {
+            contexts += ' ';
+        }
+        if (document.getElementById('check_out_' + i).checked) {
+            contexts += '1';
+			select_show = true;
+        } else {
+			contexts += '0';
+		}
+    }
+
+    var fields = '';
+    var field_num = callback('crawler_get_task_leaf_rule_field_num');
+    for (i = 0; i < field_num; i++) {
+		if (i > 0) {
+            fields += ' ';
+        }
+        if (document.getElementById('check_out_' + (context_num + i)).checked) {
+            fields += '1';
+			select_show = true;
+        } else {
+			fields += '0';
+		}
+    }
+
+    if (!select_show) {
+        alert('请选择显示字段！');
+        return;
+    }
+
+    var err = callback('crawler_set_task_leaf_rule_field_show_flags', contexts, fields);
+    if (err.length > 0) {
+        alert(err);
+        return;
+    }
+	
+	crawler_active_ui_runjs(2, 'refresh();');
+    crawler_popup_wnd_hide();
+}
+
+function select_all() {
+    var table = document.getElementById('fields');
+    
+    var num = callback('crawler_get_task_context_field_count') + callback('crawler_get_task_leaf_rule_field_num');
+    for (i = 0; i < num; i++) {
+		document.getElementById('check_out_' + i).checked = true;
+    }
+}
+
+function un_select_all() {
+    var table = document.getElementById('fields');
+    
+    var num = callback('crawler_get_task_context_field_count') + callback('crawler_get_task_leaf_rule_field_num');
+    for (i = 0; i < num; i++) {
+		document.getElementById('check_out_' + i).checked = false;
+    }
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:10px;margin-top:10px;">
+    
+    <div>
+        <table id="fields" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;margin-top:10px;" bordercolor="#000000"><tbody>
+            <tr style="background-color:#cccccc">
+               <td>字段</td>
+               <td>显示</td>
+            </tr>
+	    </tbody></table>
+    </div>
+	
+	<div style="margin-top:10px;">
+		<input type="button" style="width:90px;" value="选择全部" onclick="select_all();"/>
+		<input type="button" style="width:90px;" value="取消选择" onclick="un_select_all();"/>
+		<input type="button" style="margin-left:30px;" value="确定" onclick="onsave();"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();"/>
+	</div>
+
+</body>
+</html>

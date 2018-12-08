@@ -1,0 +1,47 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+body
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: black;
+}
+</style>
+</head>
+<body>
+<div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+增加种子。种子是采集数据的起始网页。此处不指定种子URL，相当于占位符
+</div>
+<ol>
+	<li>
+		点击 <font style="color:blue;">增加种子</font> 按钮，弹出 <font style="color:blue;">增加种子</font> 对话框
+	</li>
+	<li style="margin-top:8px;">
+		点击类型下拉选择框，选择种子类型
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		采集数据：从种子网页开始抽取结构化数据的流程
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		必须有且只有一个此类型的种子
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		登录网站：从种子网页开始登录目标网站的流程
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果目标网站需要登录，则需要一个此类型的种子，否则不要
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		注销登录：从种子网页开始注销登录信息的流程
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果目标网站对登录账户有记录，登录后要注销，下次登录才能成功，则需要一个此类型的种子，否则不要
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		验证码识别：从采集网页中识别验证码，输入验证码的流程
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果在采集过程中有验证码，则需要一个或多个此类型的种子，否则不要
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">确定</font> 按钮
+	</li>
+</ol>
+<img style="margin-left:10px;" border="1" src="img/program_add_seed.png"/>
+</body>
+</html>

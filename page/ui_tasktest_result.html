@@ -1,0 +1,47 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+td
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function clear() {
+    document.getElementById('test_result').value = '';
+}
+
+function append() {
+    var line = callback('crawler_get_study_program_test_result_line');
+    var text = document.getElementById('test_result').value;
+    if (text != '') {
+        text += '\n';
+    }
+    text += line;
+
+    document.getElementById('test_result').value = text;
+}
+
+function updateProgramTestStatus() {
+	crawler_active_ui_runjs(1, 'updateProgramTestStatus();');
+	setTimeout(function () { updateProgramTestStatus(); }, 5000);
+}
+
+</script>
+</head>
+<body onLoad="updateProgramTestStatus();" bgcolor="#999" style="margin-top:6px;margin-left:6px;margin-right:8px;">
+<textarea id="test_result" style="height:100%;width:100%;" rows="100" cols="300"></textarea>
+</body>
+</html>

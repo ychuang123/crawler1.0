@@ -1,0 +1,65 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+</style>
+
+<script type="text/javascript">
+function refresh() {
+
+    var table = document.getElementById('results');
+    var len = table.rows.length;
+    for (var i = 1; i < len; i++) {
+        table.deleteRow(1);
+    }
+
+    var row = table.rows[0];
+    len = row.cells.length;
+    for (var i = 1; i < len; i++) {
+        row.deleteCell(1);
+    }
+
+    var field_num = callback('crawler_get_rule_field_count');
+    for (i = 0; i < field_num; i++) {
+        cell = row.insertCell(i + 1);
+        cell.innerHTML = callback('crawler_get_rule_field_name', i);
+        cell.setAttribute('width', 2 * callback('crawler_get_ext_data_field_maxlen', i));
+    }
+
+    var row_num = callback('crawler_get_ext_data_row_num');
+    for (i = 0; i < row_num; i++) {
+        row = table.insertRow(i + 1);
+        cell = row.insertCell(0);
+        cell.innerHTML = (i + 1);
+
+        for (j = 0; j < field_num; j++) {
+            cell = row.insertCell(j + 1);
+            cell.innerHTML = callback('crawler_get_ext_data_field_value', i, j);
+        }
+    }
+}
+
+</script>
+</head>
+
+<body bgcolor="#999" style="margin-top:6px;margin-left:6px;margin-right:8px;">
+<div>
+<table id="results" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000">
+<tbody>
+    <tr style="background-color:#cccccc">
+        <td width="10">序号</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</body>
+</html>

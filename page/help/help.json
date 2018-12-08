@@ -1,0 +1,815 @@
+{"help_topology":{
+	"menu_width":250,
+	"menu_html":"help_menu.html",
+	"menus":
+	[
+		{
+			"name":"1 浏览网页",
+			"url":"content_browser.html"
+		},
+		{
+			"name":"1.1 浏览网页",
+			"url":"content_browser.html"
+		},
+		{
+			"name":"1.1.1 保存图片",
+			"url":"content_browser_save_pic.html"
+		},
+		{
+			"name":"1.1.2 保存网页",
+			"url":"content_browser_save_html.html"
+		},
+		{
+			"name":"1.2 抽取数据",
+			"url":"content_browser_extdata.html"
+		},
+		{
+			"name":"1.2.1 定义字段",
+			"url":"content_browser_extdata_add_field.html"
+		},
+		{
+			"name":"1.2.2 删除字段",
+			"url":"content_browser_extdata_del_field.html"
+		},
+		{
+			"name":"1.2.3 抽取数据",
+			"url":"content_browser_extdata_result.html"
+		},
+		{
+			"name":"1.2.4 导出数据",
+			"url":"content_browser_extdata_exp_data.html"
+		},
+		{
+			"name":"1.2.5 排除节点",
+			"url":"content_browser_extdata_exclude_node.html"
+		},
+		{
+			"name":"1.2.6 环境节点",
+			"url":"content_browser_extdata_environment_node.html"
+		},
+		{
+			"name":"1.2.7 规则模板",
+			"url":"content_browser_extdata_show_rule.html"
+		},
+		{
+			"name":"1.2.8 隐藏数据",
+			"url":"content_browser_extdata_hide_result.html"
+		},
+		{
+			"name":"1.2.9 返回浏览",
+			"url":"content_browser_extdata_exit.html"
+		},
+		{
+			"name":"2 规则库",
+			"url":"content_rule_enter.html"
+		},
+		{
+			"name":"2.1 增加规则",
+			"url":"content_rule_add_rule.html"
+		},
+		{
+			"name":"2.1.1 数据抽取规则",
+			"url":"content_rule_data_rule.html"
+		},
+		{
+			"name":"2.1.1.1 增加字段",
+			"url":"content_rule_data_rule_add_field.html"
+		},
+		{
+			"name":"2.1.1.2 修改字段",
+			"url":"content_rule_data_rule_mod_field.html"
+		},
+		{
+			"name":"2.1.2 网页交互操作",
+			"url":"content_rule_uioper_rule.html"
+		},
+		{
+			"name":"2.1.2.1 增加字段",
+			"url":"content_rule_uioper_rule_add_field.html"
+		},
+		{
+			"name":"2.1.2.2 修改字段",
+			"url":"content_rule_uioper_rule_mod_field.html"
+		},
+		{
+			"name":"2.1.3 验证码识别",
+			"url":"content_rule_regcode_rule.html"
+		},
+		{
+			"name":"2.1.3.1 增加字段",
+			"url":"content_rule_regcode_rule_add_field.html"
+		},
+		{
+			"name":"2.1.3.2 修改字段",
+			"url":"content_rule_regcode_rule_mod_field.html"
+		},
+		{
+			"name":"2.1.4 删除字段",
+			"url":"content_rule_del_field.html"
+		},
+		{
+			"name":"2.1.5 字段模板",
+			"url":"content_rule_select_field_set.html"
+		},
+		{
+			"name":"2.1.6 学习规则",
+			"url":"content_rule_study.html"
+		},
+		{
+			"name":"2.1.7 排除节点",
+			"url":"content_rule_exclude_node.html"
+		},
+		{
+			"name":"2.1.8 环境节点",
+			"url":"content_rule_environment_node.html"
+		},
+		{
+			"name":"2.1.9 规则模板",
+			"url":"content_rule_show_rule.html"
+		},
+		{
+			"name":"2.1.10 保存规则",
+			"url":"content_rule_save_rule.html"
+		},
+		{
+			"name":"2.1.11 抽取数据",
+			"url":"content_rule_ext_data.html"
+		},
+		{
+			"name":"2.1.12 导出数据",
+			"url":"content_rule_exp_data.html"
+		},
+		{
+			"name":"2.1.13 隐藏数据",
+			"url":"content_rule_hide_ext_data.html"
+		},
+		{
+			"name":"2.1.14 更换网页",
+			"url":"content_rule_change_url.html"
+		},
+		{
+			"name":"2.1.15 返回规则库",
+			"url":"content_rule_return.html"
+		},
+		{
+			"name":"2.2 修改规则",
+			"url":"content_rule_mod_rule.html"
+		},
+		{
+			"name":"2.3 删除规则",
+			"url":"content_rule_del_rule.html"
+		},
+		{
+			"name":"2.4 规则模板",
+			"url":"content_rule_rule_temp.html"
+		},
+		{
+			"name":"3 程序库",
+			"url":"content_program_enter.html"
+		},
+		{
+			"name":"3.1 增加程序",
+			"url":"content_program_add_program.html"
+		},
+		{
+			"name":"3.1.1 增加种子",
+			"url":"content_program_add_seed.html"
+		},
+		{
+			"name":"3.1.2 增加规则",
+			"url":"content_program_add_rule.html"
+		},
+		{
+			"name":"3.1.3 增加步骤",
+			"url":"content_program_add_step.html"
+		},
+		{
+			"name":"3.1.4 配置翻页",
+			"url":"content_program_turnpage.html"
+		},
+		{
+			"name":"3.1.5 上移规则",
+			"url":"content_program_up_rule.html"
+		},
+		{
+			"name":"3.1.6 下移规则",
+			"url":"content_program_down_step.html"
+		},
+		{
+			"name":"3.1.7 删除规则",
+			"url":"content_program_del_rule.html"
+		},
+		{
+			"name":"3.1.8 删除步骤",
+			"url":"content_program_del_step.html"
+		},
+		{
+			"name":"3.1.9 测试程序",
+			"url":"content_program_test.html"
+		},
+		{
+			"name":"3.1.9.1 暂停测试",
+			"url":"content_program_test_stop.html"
+		},
+		{
+			"name":"3.1.9.2 继续测试",
+			"url":"content_program_test_continue.html"
+		},
+		{
+			"name":"3.1.9.3 重新测试",
+			"url":"content_program_test_restart.html"
+		},
+		{
+			"name":"3.1.9.4 退出测试",
+			"url":"content_program_test_exit.html"
+		},
+		{
+			"name":"3.1.10 保存程序",
+			"url":"content_program_save.html"
+		},
+		{
+			"name":"3.1.11 返回程序库",
+			"url":"content_program_return.html"
+		},
+		{
+			"name":"3.2 修改程序",
+			"url":"content_program_mod_program.html"
+		},
+		{
+			"name":"3.3 删除程序",
+			"url":"content_program_del_program.html"
+		},
+		{
+			"name":"4 任务库",
+			"url":"content_task_enter.html"
+		},
+		{
+			"name":"4.1 增加任务",
+			"url":"content_task_add.html"
+		},
+		{
+			"name":"4.2 修改任务",
+			"url":"content_task_mod.html"
+		},
+		{
+			"name":"4.3 删除任务",
+			"url":"content_task_del.html"
+		},
+		{
+			"name":"4.4 启动采集",
+			"url":"content_task_start_crawl.html"
+		},
+		{
+			"name":"4.5 停止采集",
+			"url":"content_task_stop_crawl.html"
+		},
+		{
+			"name":"4.6 采集日志",
+			"url":"content_task_crawl_log.html"
+		},
+		{
+			"name":"4.7 任务调试",
+			"url":"content_task_debug.html"
+		},
+		{
+			"name":"4.7.1 启动采集",
+			"url":"content_task_debug_start.html"
+		},
+		{
+			"name":"4.7.2 停止采集",
+			"url":"content_task_debug_stop.html"
+		},
+		{
+			"name":"4.7.3 继续采集",
+			"url":"content_task_debug_restart.html"
+		},
+		{
+			"name":"4.7.4 显示采集",
+			"url":"content_task_debug_show_web.html"
+		},
+		{
+			"name":"4.7.5 保存图片",
+			"url":"content_task_debug_save_pic.html"
+		},
+		{
+			"name":"4.7.6 保存网页",
+			"url":"content_task_debug_save_html.html"
+		},
+		{
+			"name":"4.7.7 重采本页",
+			"url":"content_task_debug_recrawl_curpage.html"
+		},
+		{
+			"name":"4.7.8 隐藏采集",
+			"url":"content_task_debug_hide_web.html"
+		},
+		{
+			"name":"4.7.9 退出调试",
+			"url":"content_task_debug_exit.html"
+		},
+		{
+			"name":"4.8 查看数据",
+			"url":"content_task_data.html"
+		},
+		{
+			"name":"4.8.1 数据翻页",
+			"url":"content_task_data_turnpage.html"
+		},
+		{
+			"name":"4.8.2 记录详情",
+			"url":"content_task_data_detail.html"
+		},
+		{
+			"name":"4.8.3 查看网页",
+			"url":"content_task_data_html.html"
+		},
+		{
+			"name":"4.8.4 查看截屏",
+			"url":"content_task_data_pic.html"
+		},
+		{
+			"name":"4.8.5 删除记录",
+			"url":"content_task_data_del.html"
+		},
+		{
+			"name":"4.8.6 显示字段",
+			"url":"content_task_data_fields.html"
+		},
+		{
+			"name":"4.8.7 退出任务库",
+			"url":"content_task_data_exit.html"
+		},
+		{
+			"name":"4.9 备份数据",
+			"url":"content_task_bak_data.html"
+		},
+		{
+			"name":"4.10 导出数据",
+			"url":"content_task_exp_data.html"
+		},
+		{
+			"name":"4.11 删除数据",
+			"url":"content_task_del_data.html"
+		},
+		{
+			"name":"4.12 种子状态",
+			"url":"content_task_seed_status.html"
+		},
+		{
+			"name":"4.13 采集参数",
+			"url":"content_task_params.html"
+		},
+		{
+			"name":"5 验证码",
+			"url":"content_verifycode.html"
+		},
+		{
+			"name":"5.1 验证码提醒",
+			"url":"content_verifycode_notify.html"
+		},
+		{
+			"name":"5.2 输入验证码",
+			"url":"content_verifycode_input.html"
+		},
+		{
+			"name":"5.3 搜集验证码",
+			"url":"content_verifycode_collect.html"
+		},
+		{
+			"name":"5.4 停止搜集",
+			"url":"content_verifycode_collect_stop.html"
+		},
+		{
+			"name":"6 系统设置",
+			"url":"content_setting.html"
+		},
+		{
+			"name":"6.1 系统参数",
+			"url":"content_setting_params.html"
+		},
+		{
+			"name":"6.1.1 配置参数",
+			"url":"content_setting_params_edit.html"
+		},
+		{
+			"name":"6.2 字段模板",
+			"url":"content_field_setting.html"
+		},
+		{
+			"name":"6.2.1 增加字段模板",
+			"url":"content_field_setting_add.html"
+		},
+		{
+			"name":"6.2.2 修改字段模板",
+			"url":"content_field_setting_mod.html"
+		},
+		{
+			"name":"6.2.3 删除字段模板",
+			"url":"content_field_setting_del.html"
+		},
+		{
+			"name":"6.3 爬虫列表",
+			"url":"content_crawl_list.html"
+		},
+		{
+			"name":"7 软件授权",
+			"url":"content_auth.html"
+		},
+		{
+			"name":"7.1 申请授权",
+			"url":"content_auth_add.html"
+		},
+		{
+			"name":"7.2 升级软件",
+			"url":"content_auth_update.html"
+		},
+		{
+			"name":"8 应用举例",
+			"url":"content_example.html"
+		},
+		{
+			"name":"8.1 列表",
+			"url":"content_example_list.html"
+		},
+		{
+			"name":"8.1.1 新建列表规则",
+			"url":"content_example_list_add_rule.html"
+		},
+		{
+			"name":"8.1.2 增加标题字段",
+			"url":"content_example_list_add_title_field.html"
+		},
+		{
+			"name":"8.1.3 增加网址字段",
+			"url":"content_example_list_add_url_field.html"
+		},
+		{
+			"name":"8.1.4 增加时间字段",
+			"url":"content_example_list_add_time_field.html"
+		},
+		{
+			"name":"8.1.5 学习列表规则",
+			"url":"content_example_list_study_rule.html"
+		},
+		{
+			"name":"8.1.6 保存列表规则",
+			"url":"content_example_list_save_rule.html"
+		},
+		{
+			"name":"8.1.7 新建程序",
+			"url":"content_program_add_program.html"
+		},
+		{
+			"name":"8.1.8 增加种子",
+			"url":"content_example_list_program_add_seed.html"
+		},
+		{
+			"name":"8.1.9 增加列表规则",
+			"url":"content_example_list_program_add_rule.html"
+		},
+		{
+			"name":"8.1.10 保存程序",
+			"url":"content_example_list_program_save.html"
+		},
+		{
+			"name":"8.1.11 增加任务",
+			"url":"content_example_list_task_add.html"
+		},
+		{
+			"name":"8.1.12 启动采集",
+			"url":"content_example_list_task_start_crawl.html"
+		},
+		{
+			"name":"8.2 列表+详情",
+			"url":"content_example_list_detail.html"
+		},
+		{
+			"name":"8.2.1 新建详情规则",
+			"url":"content_example_list_detail_add_rule.html"
+		},
+		{
+			"name":"8.2.2 增加标题字段",
+			"url":"content_example_list_detail_add_title_field.html"
+		},
+		{
+			"name":"8.2.3 增加时间字段",
+			"url":"content_example_list_detail_add_time_field.html"
+		},
+		{
+			"name":"8.2.4 增加来源字段",
+			"url":"content_example_list_detail_add_src_field.html"
+		},
+		{
+			"name":"8.2.5 增加正文字段",
+			"url":"content_example_list_detail_add_content_field.html"
+		},
+		{
+			"name":"8.2.6 学习详情规则",
+			"url":"content_example_list_detail_study_rule.html"
+		},
+		{
+			"name":"8.2.7 保存详情规则",
+			"url":"content_example_list_detail_save_rule.html"
+		},
+		{
+			"name":"8.2.8 新建程序",
+			"url":"content_example_list_detail_add_program.html"
+		},
+		{
+			"name":"8.2.9 增加种子",
+			"url":"content_example_list_program_add_seed.html"
+		},
+		{
+			"name":"8.2.10 增加列表规则",
+			"url":"content_example_list_program_add_rule.html"
+		},
+		{
+			"name":"8.2.11 增加步骤",
+			"url":"content_example_list_detail_add_step.html"
+		},
+		{
+			"name":"8.2.12 增加详情规则",
+			"url":"content_example_list_detail_add_detail_rule.html"
+		},
+		{
+			"name":"8.2.13 保存程序",
+			"url":"content_example_list_detail_program_save.html"
+		},
+		{
+			"name":"8.2.14 增加任务",
+			"url":"content_example_list_detail_task_add.html"
+		},
+		{
+			"name":"8.2.15 启动采集",
+			"url":"content_example_list_detail_task_start_crawl.html"
+		},
+		{
+			"name":"8.3 详情",
+			"url":"content_example_detail.html"
+		},
+		{
+			"name":"8.3.1 新建程序",
+			"url":"content_example_detail_add_program.html"
+		},
+		{
+			"name":"8.3.2 增加种子",
+			"url":"content_example_list_program_add_seed.html"
+		},
+		{
+			"name":"8.3.3 增加详情规则",
+			"url":"content_example_detail_program_add_rule.html"
+		},
+		{
+			"name":"8.3.4 保存程序",
+			"url":"content_example_detail_program_save.html"
+		},
+		{
+			"name":"8.3.5 增加任务",
+			"url":"content_example_detail_task_add.html"
+		},
+		{
+			"name":"8.3.6 启动采集",
+			"url":"content_example_detail_task_start_crawl.html"
+		},
+		{
+			"name":"8.4 列表+详情+翻页",
+			"url":"content_example_list_detail_turnpage.html"
+		},
+		{
+			"name":"8.4.1 新建翻页规则",
+			"url":"content_example_list_detail_turnpage_add_rule.html"
+		},
+		{
+			"name":"8.4.2 增加下页字段",
+			"url":"content_example_list_detail_turnpage_add_nextpage_field.html"
+		},
+		{
+			"name":"8.4.3 学习翻页规则",
+			"url":"content_example_list_detail_turnpage_study_rule.html"
+		},
+		{
+			"name":"8.4.4 保存翻页规则",
+			"url":"content_example_list_detail_turnpage_save_rule.html"
+		},
+		{
+			"name":"8.4.5 新建程序",
+			"url":"content_example_list_detail_turnpage_add_program.html"
+		},
+		{
+			"name":"8.4.6 增加种子",
+			"url":"content_example_list_program_add_seed.html"
+		},
+		{
+			"name":"8.4.7 增加列表规则",
+			"url":"content_example_list_program_add_rule.html"
+		},
+		{
+			"name":"8.4.8 增加翻页规则",
+			"url":"content_example_list_detail_turnpage_program_add_rule.html"
+		},
+		{
+			"name":"8.4.9 设置翻页",
+			"url":"content_example_list_detail_turnpage_program_set_turnpage.html"
+		},
+		{
+			"name":"8.4.10 增加步骤",
+			"url":"content_example_list_detail_turnpage_add_step.html"
+		},
+		{
+			"name":"8.4.11 增加详情规则",
+			"url":"content_example_list_detail_turnpage_add_detail_rule.html"
+		},
+		{
+			"name":"8.4.12 保存程序",
+			"url":"content_example_list_detail_turnpage_program_save.html"
+		},
+		{
+			"name":"8.4.13 增加任务",
+			"url":"content_example_list_detail_turnpage_task_add.html"
+		},
+		{
+			"name":"8.4.14 启动采集",
+			"url":"content_example_list_detail_turnpage_task_start_crawl.html"
+		},
+		{
+			"name":"8.5 网页交互+列表",
+			"url":"content_example_uioper_list.html"
+		},
+		{
+			"name":"8.5.1 新建搜索规则",
+			"url":"content_example_uioper_list_add_search_rule.html"
+		},
+		{
+			"name":"8.5.2 增加输入字段",
+			"url":"content_example_uioper_list_add_keyword_field.html"
+		},
+		{
+			"name":"8.5.3 增加提交按钮",
+			"url":"content_example_uioper_list_add_commit_field.html"
+		},
+		{
+			"name":"8.5.4 学习搜索规则",
+			"url":"content_example_uioper_list_study_search_rule.html"
+		},
+		{
+			"name":"8.5.5 保存搜索规则",
+			"url":"content_example_uioper_list_save_search_rule.html"
+		},
+		{
+			"name":"8.5.6 新建列表规则",
+			"url":"content_example_uioper_list_add_list_rule.html"
+		},
+		{
+			"name":"8.5.7 增加标题字段",
+			"url":"content_example_uioper_list_add_news_title_field.html"
+		},
+		{
+			"name":"8.5.8 增加网址字段",
+			"url":"content_example_uioper_list_add_news_url_field.html"
+		},
+		{
+			"name":"8.5.9 增加时间字段",
+			"url":"content_example_uioper_list_add_news_time_field.html"
+		},
+		{
+			"name":"8.5.10 增加摘要字段",
+			"url":"content_example_uioper_list_add_news_text_field.html"
+		},
+		{
+			"name":"8.5.11 学习列表规则",
+			"url":"content_example_uioper_list_study_list_rule.html"
+		},
+		{
+			"name":"8.5.12 保存列表规则",
+			"url":"content_example_uioper_list_save_list_rule.html"
+		},
+		{
+			"name":"8.5.13 新建程序",
+			"url":"content_example_uioper_list_add_program.html"
+		},
+		{
+			"name":"8.5.14 增加种子",
+			"url":"content_example_list_program_add_seed.html"
+		},
+		{
+			"name":"8.5.15 增加搜索规则",
+			"url":"content_example_uioper_list_program_add_search_rule.html"
+		},
+		{
+			"name":"8.5.16 增加步骤",
+			"url":"content_example_uioper_list_program_add_step.html"
+		},
+		{
+			"name":"8.5.17 增加列表规则",
+			"url":"content_example_uioper_list_program_add_list_rule.html"
+		},
+		{
+			"name":"8.5.18 保存程序",
+			"url":"content_example_uioper_list_program_save.html"
+		},
+		{
+			"name":"8.5.19 增加任务",
+			"url":"content_example_uioper_list_task_add.html"
+		},
+		{
+			"name":"8.5.20 启动采集",
+			"url":"content_example_uioper_list_task_start_crawl.html"
+		},
+		{
+			"name":"8.6 登录+列表",
+			"url":"content_example_login_list.html"
+		},
+		{
+			"name":"8.6.1 新建登录规则",
+			"url":"content_example_login_list_add_login_rule.html"
+		},
+		{
+			"name":"8.6.2 增加账号字段",
+			"url":"content_example_login_list_add_user_field.html"
+		},
+		{
+			"name":"8.6.3 增加密码字段",
+			"url":"content_example_login_list_add_pass_field.html"
+		},
+		{
+			"name":"8.6.4 增加登录按钮",
+			"url":"content_example_login_list_add_login_field.html"
+		},
+		{
+			"name":"8.6.5 学习登录规则",
+			"url":"content_example_login_list_study_login_rule.html"
+		},
+		{
+			"name":"8.6.6 保存登录规则",
+			"url":"content_example_login_list_save_login_rule.html"
+		},
+		{
+			"name":"8.6.7 新建列表规则",
+			"url":"content_example_login_list_add_list_rule.html"
+		},
+		{
+			"name":"8.6.8 增加作者字段",
+			"url":"content_example_login_list_add_list_author_field.html"
+		},
+		{
+			"name":"8.6.9 增加时间字段",
+			"url":"content_example_login_list_add_list_time_field.html"
+		},
+		{
+			"name":"8.6.10 增加正文字段",
+			"url":"content_example_login_list_add_list_content_field.html"
+		},
+		{
+			"name":"8.6.11 增加转发字段",
+			"url":"content_example_login_list_add_list_zhuanfa_field.html"
+		},
+		{
+			"name":"8.6.12 增加评论字段",
+			"url":"content_example_login_list_add_list_pinglun_field.html"
+		},
+		{
+			"name":"8.6.13 增加点赞字段",
+			"url":"content_example_login_list_add_list_dianzan_field.html"
+		},
+		{
+			"name":"8.6.14 学习列表规则",
+			"url":"content_example_login_list_study_list_rule.html"
+		},
+		{
+			"name":"8.6.15 保存列表规则",
+			"url":"content_example_login_list_save_list_rule.html"
+		},
+		{
+			"name":"8.6.16 新建程序",
+			"url":"content_example_login_list_add_program.html"
+		},
+		{
+			"name":"8.6.17 增加登录种子",
+			"url":"content_example_login_list_program_add_login_seed.html"
+		},
+		{
+			"name":"8.6.18 增加登录规则",
+			"url":"content_example_login_list_program_add_login_rule.html"
+		},
+		{
+			"name":"8.6.19 增加列表种子",
+			"url":"content_example_login_list_program_add_list_seed.html"
+		},
+		{
+			"name":"8.6.20 增加列表规则",
+			"url":"content_example_login_list_program_add_list_rule.html"
+		},
+		{
+			"name":"8.6.21 保存程序",
+			"url":"content_example_login_list_program_save.html"
+		},
+		{
+			"name":"8.6.22 增加任务",
+			"url":"content_example_login_list_task_add.html"
+		},
+		{
+			"name":"8.6.23 启动采集",
+			"url":"content_example_login_list_task_start_crawl.html"
+		}
+	]
+}}

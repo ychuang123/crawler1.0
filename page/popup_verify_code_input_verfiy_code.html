@@ -1,0 +1,155 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function get_img_src() {
+	img_url = document.getElementById('img').src
+	if(img_url.indexOf('file:///') == 0) {
+		img_url = 'file://' + img_url.substr(8, img_url.length);
+	}
+	return img_url;
+}
+
+function loop(client_id) {
+	status = callback('crawler_verify_code_get_status', client_id);
+	if(status != '等待处理') {
+		alert(status);
+		crawler_popup_wnd_hide();
+		crawler_active_ui_runjs(2, 'refresh();');
+		return;
+	}
+	
+	if(document.getElementById('status_msg').innerHTML == '正在刷新') {
+		var img_url = callback('crawler_verify_code_get_img_url', client_id);
+		if(img_url != get_img_src()) {
+			document.getElementById('time_td').innerHTML = callback('crawler_verify_code_get_refreshtime', client_id);
+			document.getElementById('img').src = img_url;
+			document.getElementById('status_msg').innerHTML = '';
+			document.getElementById('status_msg').style.display = 'none';
+		}
+	}
+	
+	setTimeout(function () { loop(client_id); }, 5000);
+}
+
+function load() {
+    var url = window.location.href;
+    var pos = url.indexOf('?');
+    var client_id = '';
+    if (pos > 0) {
+        baseurl = url.substring(0, pos);
+        var query = url.substring(pos + 1);
+        var params = query.split("&");
+        for (var i = 0; i < params.length; i++) {
+            var namevalue = params[i].split("=");
+            if (namevalue.length != 2) {
+                continue;
+            }
+            if (namevalue[0] == 'client_id') {
+                client_id = parseInt(namevalue[1]);
+            }
+        }
+    }
+
+	var refresh_time = callback('crawler_verify_code_get_refreshtime', client_id);
+    var img_url = callback('crawler_verify_code_get_img_url', client_id);
+	document.getElementById('time_td').innerHTML = refresh_time;
+    document.getElementById('img').src = img_url;
+    document.getElementById('btn_refresh').setAttribute('onclick', 'refresh_img(' + client_id + ');');
+    document.getElementById('btn_ok').setAttribute('onclick', 'commit(' + client_id + ');');
+	
+	loop(client_id);
+}
+
+function refresh_img(client_id) {
+	if(document.getElementById('status_msg').innerHTML == '正在刷新') {
+		alert('正在刷新!');
+		return;
+	}
+	
+	if(document.getElementById('status_msg').innerHTML == '正在提交') {
+		alert('正在提交!');
+		return;
+	}
+	
+	document.getElementById('status_msg').innerHTML = '正在刷新';
+	document.getElementById('status_msg').style.display = '';
+	callback('crawler_verify_code_refresh_img', client_id);
+}
+
+function commit(client_id) {
+	if(document.getElementById('status_msg').innerHTML == '正在刷新') {
+		alert('等刷新完成后提交!');
+		return;
+	}
+	
+	if(document.getElementById('status_msg').innerHTML == '正在提交') {
+		alert('已提交!');
+		return;
+	}
+	
+    var verify_code = document.getElementById('verify_code').value;
+    if (verify_code == '') {
+		alert('请输入验证码！');
+		return;
+	}
+	
+	var img_url = get_img_src();
+    var err = callback('crawler_verify_code_input_verify_code', client_id, img_url, verify_code);
+    if (err != '') {
+        alert('验证码图片已变化，请重新提交！');
+		return;
+    }
+	
+	document.getElementById('status_msg').innerHTML = '正在提交';
+	document.getElementById('status_msg').style.display = '';
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+	<div>
+        <table width="100%" cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000"><tbody>
+            <tr>
+                <td width="100">时间</td>
+                <td width="600" id="time_td"></td>
+            </tr>
+			<tr>
+                <td>图片</td>
+                <td><img id="img"/></td>
+            </tr>
+            <tr>
+                <td>验证码</td>
+                <td><input id="verify_code" type="text" style="width:100px;"/></td>
+            </tr>
+        </tbody></table>
+	</div>
+	
+	<div style="margin-top:10px;">
+		<input type="button" value="提交" id="btn_ok"/>
+        <input type="button" value="刷新" id="btn_refresh" style="margin-left:10px;"/>
+        <input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:10px;"/>
+	</div>
+	
+	<div id='status_msg' style="margin-top:10px;display:none">
+	</div>
+</body>
+</html>

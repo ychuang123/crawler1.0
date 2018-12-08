@@ -1,0 +1,46 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function commit() {
+	var seed_range = document.getElementById('seed_range').value;
+	crawler_active_ui_runjs(2, 'on_cmd_with_arg(\'start_execute\', \'' + seed_range + '\');');
+	crawler_popup_wnd_hide();
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+	<div>
+		<select id="seed_range" style="width:150px;">
+			<option value="all">所有种子</option>
+			<option value="no_crawl">未采集种子</option>
+			<option value="success_crawl">成功种子</option>
+			<option value="fail_crawl">失败种子</option>
+		</select>
+	</div>
+	
+	<div style="margin-top:30px;">
+		<input type="button" value="确定" onclick="commit();"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+</body>
+</html>

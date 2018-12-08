@@ -1,0 +1,87 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+td,div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function load() {
+    var url = window.location.href;
+    var pos = url.indexOf('?');
+    var save_html = 0;
+    if (pos > 0) {
+        var query = url.substring(pos + 1);
+        var params = query.split("&");
+        for (var i = 0; i < params.length; i++) {
+            var namevalue = params[i].split("=");
+            if (namevalue.length != 2) {
+                continue;
+            }
+            if (namevalue[0] == 'save_html') {
+                save_html = parseInt(namevalue[1]);
+            }
+        }
+    }
+
+    document.getElementById('select_file').setAttribute('onclick', 'select_file(' + save_html + ');');
+    document.getElementById('btn_ok').setAttribute('onclick', 'commit(' + save_html + ');');
+}
+
+function select_file(save_html) {
+    var path = '';
+    if (save_html == 1) {
+        path = crawler_get_select_file(0, 'txt', '文本文件');
+    } else {
+        path = crawler_get_select_file(0, 'bmp', '图形文件');
+    }
+
+    if (path != '') {
+        document.getElementById("path").value = path;
+    }
+}
+
+function commit(save_html) {
+    var path = document.getElementById("path").value;
+    if (path == '') {
+        alert('请输入文件!');
+    }
+
+    var err = crawler_navigation_save(save_html, 4, path);
+	
+    if (err != '') {
+        alert(err);
+        return;
+    }
+
+    crawler_popup_wnd_hide();
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:30px;margin-top:30px;">
+	<div>
+        文件
+        <input id="path" type="text" style="width:200px;"/>
+        <input id="select_file" type="button" value="文件"/>
+    </div>
+	<div style="margin-top:10px;">
+		<input id="btn_ok" type="button" value="确定"/>
+		<input type="button" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+</body>
+</html>

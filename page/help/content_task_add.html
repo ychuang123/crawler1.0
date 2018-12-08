@@ -1,0 +1,125 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+body
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: black;
+}
+</style>
+</head>
+<body>
+<div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+定义程序的运行，包括启动方式、运行需要的种子URL等参数
+</div>
+<ol>
+	<li>
+		点击 <font style="color:blue;">增加任务</font> 按钮，弹出 <font style="color:blue;">选择程序</font> 对话框
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">程序</font> 下拉选择框，选择程序
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">确定</font> 按钮，弹出 <font style="color:blue;">增加任务</font> 对话框
+	</li>
+	<li style="margin-top:8px;">
+		输入任务名称
+	</li>
+	<li style="margin-top:8px;">
+		如果需要在采集过程中保存网页HTML代码，勾选 <font style="color:blue;">保存网页</font> 选择框
+	</li>
+	<li style="margin-top:8px;">
+		如果需要在采集过程中保存网页画面，勾选 <font style="color:blue;">保存截屏</font> 选择框
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">运行类型</font> 下拉选择框，选择运行类型
+	</li>
+	<li style="margin-top:8px;">
+		如果选择了定时运行，在参数输入框中输入定时运行时间点，格式：<font style="color:blue;">HH:MM</font>
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果有多个时间点，使用逗号分隔
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">08:00,12:00,16:00</font>
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		如果选择了循环运行，在参数输入框中输入循环间隔周期，单位为分钟
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		输入种子URL，或者点击 <font style="color:blue;">文件</font> 按钮选择种子文件
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		选择的文件内容必须是 ANSI 编码格式的
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果种子URL只有1个，直接输入种子URL，否则，须将种子URL写到本地文件，一行一个，然后选择该文件
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		选择文件后，种子URL的形式为：<font style="color:blue;">@file:本地文件地址</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		种子URL前面可以有0个，1个或者多个命令及参数
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		命令与参数之间使用逗号分隔，命令之间，以及命令与种子URL之间使用冒号分隔
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">cmd1,arg1:cmd2,arg2:url</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">cmd1,arg1:cmd2,arg2:@file:本地文件地址</font>
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		命令1：<font style="color:blue;">@file</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		从本地文件加载种子URL。没有参数，在所有命令之后，冒号后面为本地文件
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">@file:D:\seed.txt</font>
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		命令2：<font style="color:blue;">@tag</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		给种子URL分配标签。有 1 个参数：标签
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">@tag:时政:http://shizhen.sina.com.cn</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">@tag:军事:http://junshi.sina.com.cn</font>
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		命令3：<font style="color:blue;">@rep</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		批量生成多个种子URL。有 4 个参数：要替换的占位符、循环起始数、循环结束数、步长
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">@rep,%d,1,31,1:http://news.sina.com.cn/md_%d</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		上面的种子 URL 经过 <font style="color:blue;">@rep</font> 命令替换，生成如下 31 个种子URL：
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">http://news.sina.com.cn/md_1</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">http://news.sina.com.cn/md_2</font>
+		</div><div style="margin-top:20px;margin-left:2px;margin-right:10px;">
+		命令4：<font style="color:blue;">@seed</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		为网页交互规则指定参数
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">@input</font> 后面的参数为该种子下的步骤序号，交互规则名，以及规则的输入值
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">@input,1,关键词搜索,雾霾:http://baidu.com</font>
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		如果程序有网页交互规则，且交互规则有输入参数，则需要指定交互规则的参数值，或者点击 <font style="color:blue;">文件</font> 按钮选择参数文件
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		选择的文件内容必须是 ANSI 编码格式的
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		多个参数值之间使用逗号分隔
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果有多行参数值，须将参数值写到本地文件，然后选择该文件
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果上面第 9 步种子URL中已经指定了规则的输入值，这里可以填 @seed 表示从种子URL中取
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果有多行参数值，每次只会依次使用其中一行。比如登录账户和密码
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果每行参数值都要采集，须使用上面第 9 步 input 指令将多行参数值配置到种子URL中
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">确定</font> 按钮提交
+		</div>
+	</li>
+</ol>
+<img style="margin-left:10px;" border="1" src="img/task_add.png"/>
+<img style="margin-left:10px;margin-top:10px;" border="1" src="img/task_define.png"/>
+</body>
+</html>

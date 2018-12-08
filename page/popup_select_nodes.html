@@ -1,0 +1,72 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+</style>
+<script type="text/javascript">
+
+function SetNodes(exclude_flag)
+{
+	if(exclude_flag == 1) {
+		callback('crawler_set_exclude_nodes');
+	} else {
+		callback('crawler_set_environ_nodes');
+	}
+	crawler_popup_wnd_hide();
+}
+
+function load()
+{
+	var exclude_flag = 0;
+	var url = window.location.href;
+    var pos = url.indexOf('?');
+    var query = url.substring(pos + 1);
+    var params = query.split("&");
+    for (var i = 0; i < params.length; i++) {
+		var namevalue = params[i].split("=");
+        if(namevalue.length != 2) {
+			continue;
+        }
+		if(namevalue[0] == 'exclude_flag') {
+            exclude_flag = parseInt(namevalue[1]);
+		}
+    }
+	
+	if(exclude_flag == 1) {
+		callback('crawler_show_exclude_nodes');
+	} else {
+		callback('crawler_show_environ_nodes');
+	}
+	
+	document.getElementById("set_nodes").setAttribute('onclick', 'SetNodes(' + exclude_flag + ');');
+}
+
+</script>
+</head>
+
+<body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:100px;margin-top:50px;">
+	<div>
+		<span style="FONT-FAMILY:黑体;">高亮</span>
+		<span id="select_nodenum" title="选择的高亮节点数量">0</span>
+		<input type="button" id="top_junior_ext" value="清除" title="取消所有高亮节点" onclick="callback('crawler_clear_select_nodes');"/>
+		<input type="button" id="top_junior_ext" value="上移" title="选择所有高亮节点的父节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'up');"/>
+		<input type="button" id="top_junior_ext" value="左移" title="选择所有高亮节点的前一个兄弟节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'left');"/>
+		<input type="button" id="top_junior_ext" value="右移" title="选择所有高亮节点的后一个兄弟节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'right');"/>
+		<input type="button" id="top_junior_ext" value="下移" title="选择所有高亮节点的相同文本子节点为高亮节点" onclick="callback('crawler_move_select_nodes', 'down');"/>
+	</div>
+	
+	<div style="margin-top:10px;">
+		<input id="set_nodes" type="button" value="确定"/>
+		<input type="button" id="top_junior_ext" value="取消" onclick="crawler_popup_wnd_hide();" style="margin-left:20px;"/>
+	</div>
+</body>
+</html>

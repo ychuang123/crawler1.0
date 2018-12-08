@@ -1,0 +1,18 @@
+A {
+	COLOR: #0066ff
+}
+A:visited {
+	COLOR: #0066ff
+}
+BODY {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; FONT-SIZE: 14px; PADDING-BOTTOM: 10px; COLOR: #000000; PADDING-TOP: 10px; FONT-FAMILY: "Trebuchet MS", sans-serif, arial
+}
+A {
+	TEXT-DECORATION: underline
+}
+A.subtleLink {
+	FONT-SIZE: 10px; COLOR: #999999
+}
+A.subtleLink:hover {
+	COLOR: #666666
+}

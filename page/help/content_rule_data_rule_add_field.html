@@ -1,0 +1,82 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+body
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: black;
+}
+</style>
+</head>
+<body>
+<div style="margin-top:10px;margin-left:8px;margin-right:10px;">
+增加字段。每个字段对应一列数据，如果有多列数据，则要定义多个字段
+</div>
+<ol>
+	<li>
+		点击 <font style="color:blue;">增加字段</font> 按钮，弹出 <font style="color:blue;">增加字段</font> 对话框
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">清除</font> 按钮，清除当前的选择
+	</li>
+	<li style="margin-top:8px;">
+		将鼠标移到目标数据上，点击鼠标右键，选择目标数据
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果目标数据有多行，可以选择2-3个目标数据
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		左上角高亮数字为选择的目标数据数量。如果与预期不符，点击 <font style="color:blue;">清除</font> 按钮后重新选择
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		根据需要，点击 <font style="color:blue;">上移</font> <font style="color:blue;">左移</font> <font style="color:blue;">右移</font> <font style="color:blue;">下移</font>按钮，调整选择的目标数据范围
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		当学习规则失败，提示无法对齐样本节点时，要检查所选样本节点的范围是否一致
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		输入字段名称
+	</li>
+	<li style="margin-top:8px;">
+		选择取值类型：文本、网址、或者网页元素的某个属性值
+	</li>
+	<li style="margin-top:8px;">
+		如果需要，定义取值处理
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">num</font> 取正整数
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">left_substr:off,count</font> 从左向右取子串。off为起始位置，最左边的位置是1，依次递增，count为要取子串的长度，0表示取到最右边
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		举例 left_substr:1,10  取前10个字符
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		<font style="color:blue;">right_substr:off,count</font> 从右向左取子串。off为起始位置，最右边的位置是1，依次递增，count为要取子串的长度，0表示取到最左边
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		举例 right_substr:1,10  取后10个字符
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		如果需要，设置取值缺失时的默认赋值
+	</li>
+	<li style="margin-top:8px;">
+		如果需要，设置取值的有效值集
+		<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		值集成员之间使用英文逗号分隔
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		举例 <font style="color:blue;">北京,四川,陕西</font>
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		如果字段的取值为整数，可以增加区间成员
+		</div><div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+		举例 <font style="color:blue;">2,15~50,77</font>
+		</div>
+	</li>
+	<li style="margin-top:8px;">
+		如果不许字段为空，勾选 <font style="color:blue;">不许为空</font> 选择框
+	</li>
+	<li style="margin-top:8px;">
+		点击 <font style="color:blue;">确定</font> 按钮，提交字段
+	</li>
+</ol>
+<img style="margin-left:10px;" border="1" src="img/rule_data_rule_add_field.png"/>
+</body>
+</html>

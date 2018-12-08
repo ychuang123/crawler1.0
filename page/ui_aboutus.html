@@ -1,0 +1,38 @@
+﻿<html>
+<head>
+
+<style type="text/css">
+div
+{
+    FONT-FAMILY:"宋体";
+    font-size: 30px;
+}
+</style>
+
+<script type="text/javascript">
+
+function load() {
+    var url = window.location.href;
+	var index = url.lastIndexOf('/');
+	var img_src = url.substring(0, index + 1) + 'img/weixin_dyh.jpg';
+    document.getElementById('weixin_dyh').src = img_src;
+}
+
+</script>
+</head>
+
+<body onLoad="load();" style="margin-top:150px;margin-left:200px;margin-right:8px;">
+	<div>
+	我们是一支聚焦互联网及人工智能的软件研发团队
+	<div/>
+	<div style="margin-top:20px;">
+	坚毅执着、学习创新，是我们永恒的追求
+	</div>
+	<div style="margin-top:20px;">
+	更多信息请关注微信订阅号
+	</div>
+	<div>
+	<img id="weixin_dyh">
+	</div>
+</body>
+</html>

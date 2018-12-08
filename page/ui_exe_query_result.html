@@ -1,0 +1,234 @@
+﻿<html>
+<head>
+<style type="text/css">
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 84px;
+	border: 1px;
+}
+td
+{
+    FONT-FAMILY:"宋体";
+    font-size: 18px;
+}
+</style>
+<script type="text/javascript">
+
+function save2db(rec_index, src) {
+    var err = callback('crawler_save_task_leaf_rule_rec_2_db', rec_index);
+    if (err.length > 0) {
+        alert(err);
+        return;
+    }
+    var row = src.parentElement.parentElement;
+    row.cells[field_num + 1].innerHTML = '是';
+    alert("成功!");
+}
+
+function save2filesystem(rec_index) {
+    var err = callback('crawler_save_task_leaf_rule_rec_2_filesystem', rec_index);
+    if (err.length > 0) {
+        alert(err);
+        return;
+    }
+    alert("成功!");
+}
+
+function refresh() {
+    var page_start = callback('crawler_get_task_leaf_rule_page_start');
+    var rec_num = callback('crawler_get_task_leaf_rule_rec_num');
+    var field_num = callback('crawler_get_task_leaf_rule_field_num');
+	var field_show_flags = callback('crawler_get_task_leaf_rule_field_show_flags').split(' ');
+    var context_num = callback('crawler_get_task_context_field_count');
+	var context_field_show_flags = callback('crawler_get_task_context_field_show_flags').split(' ');
+	
+    var results_head = document.getElementById('results_head');
+    var len = results_head.cells.length;
+    for (var i = 1; i < len; i++) {
+        results_head.deleteCell(1);
+    }
+	
+	var context_show_fields = 0;
+    for (i = 0; i < context_num; i++) {
+		if(context_field_show_flags[i] != '1') {
+			continue;
+		}
+		
+		context_show_fields += 1;
+		var cell = results_head.insertCell(context_show_fields);
+        cell.innerHTML = callback('crawler_get_task_context_field_name', i);
+        cell.setAttribute('width', callback('crawler_get_task_context_field_maxvaluelens', i) * 100);
+	}
+	
+	var rule_show_fields = 0;
+    for (i = 0; i < field_num; i++) {
+		if(field_show_flags[i] != '1') {
+			continue;
+		}
+		
+		rule_show_fields += 1;
+        var cell = results_head.insertCell(context_show_fields + rule_show_fields);
+        cell.innerHTML = callback('crawler_get_task_leaf_rule_field_name', i);
+        cell.setAttribute('width', callback('crawler_get_task_leaf_rule_field_maxvaluelens', i));
+    }
+	
+	if(callback('crawler_is_senior_version') == 1) {
+		var cell = results_head.insertCell(context_show_fields + rule_show_fields + 1);
+		cell.innerHTML = '已入库';
+		cell.setAttribute('width', '200');
+	}
+	
+    var table = document.getElementById('results');
+    len = table.rows.length;
+    for (var i = 1; i < len; i++) {
+        table.deleteRow(1);
+    }
+    for (i = 0; i < rec_num; i++) {
+        var row = table.insertRow(i + 1);
+        var cell = row.insertCell(0);
+        cell.innerHTML = '<input id="check_' + i + '" type="checkbox"/>' + (page_start + i + 1);
+
+		context_show_fields = 0;
+        for (j = 0; j < context_num; j++) {
+			if(context_field_show_flags[j] != '1') {
+				continue;
+			}
+			
+			context_show_fields += 1;
+			cell = row.insertCell(context_show_fields);
+        	cell.innerHTML = callback('crawler_get_task_context_field_value', i, j);
+		}
+		
+		rule_show_fields = 0;
+        for (j = 0; j < field_num; j++) {
+            if(field_show_flags[j] != '1') {
+				continue;
+			}
+			
+			rule_show_fields += 1;
+			cell = row.insertCell(context_show_fields + rule_show_fields);
+            cell.innerHTML = callback('crawler_get_task_leaf_rule_field_short_value', i, j);
+        }
+		
+		if(callback('crawler_is_senior_version') == 1) {
+			cell = row.insertCell(context_show_fields + rule_show_fields + 1);
+			cell.innerHTML = callback('crawler_get_task_leaf_rule_save2db_status', i);
+		}
+    }
+}
+
+function on_cmd(cmd) {
+    var table = document.getElementById('results');
+    var len = table.rows.length;
+    var selected = new Array();
+    var select_num = 0;
+	var select_str = '';
+    for (var i = 0; i < len - 1; i++) {
+        if (cmd == 'select_all') {
+            document.getElementById('check_' + i).checked = true;
+        } else if (cmd == 'unselect') {
+            document.getElementById('check_' + i).checked = false;
+        } else if (document.getElementById('check_' + i).checked) {
+            selected[select_num] = i;
+            select_num += 1;
+			
+			if(select_num > 1) {
+				select_str += ',';
+			}
+			select_str += i;
+        }
+    }
+
+    if (cmd == 'detail') {
+        if (select_num == 0) {
+            alert('请选择记录！');
+            return;
+        }
+        if (select_num > 1) {
+            alert('请选择一条记录！');
+            return;
+        }
+        crawler_popup_wnd_show('记录详情', 'popup_detail_rec.html?index=' + selected[0], 1000, 600);
+		
+	} else if (cmd == 'show_html') {
+        if (select_num == 0) {
+            alert('请选择记录！');
+            return;
+        }
+        if (select_num > 1) {
+            alert('请选择一条记录！');
+            return;
+        }
+		if(callback('crawler_check_exe_rec_has_page_html', selected[0]) == 0) {
+			alert('此记录采集时没有保存网页代码！');
+            return;
+		}
+        crawler_popup_wnd_show('记录的网页代码', 'popup_show_exe_rec_page_html.html?index=' + selected[0], 1200, 800);
+		
+	} else if (cmd == 'show_img') {
+        if (select_num == 0) {
+            alert('请选择记录！');
+            return;
+        }
+        if (select_num > 1) {
+            alert('请选择一条记录！');
+            return;
+        }
+        if(callback('crawler_check_exe_rec_has_page_img', selected[0]) == 0) {
+			alert('此记录采集时没有保存网页截图！');
+            return;
+		}
+        crawler_popup_wnd_show('记录的网页截图', 'popup_show_exe_rec_page_img.html?index=' + selected[0], 1200, 800);
+		
+	} else if (cmd == 'remove') {
+        if (select_num == 0) {
+            alert('请选择记录！');
+            return;
+        }
+        if (crawl_prompt_yes_or_no('是否要删除选择的记录？') == 0) {
+            return;
+        }
+        callback('crawler_exe_remove_record', select_str);
+		refresh();
+		
+    } else if (cmd == 'write_db') {
+		if (select_num == 0) {
+            alert('请选择记录！');
+            return;
+        }
+        if (select_num > 1) {
+            alert('请选择一条记录！');
+            return;
+        }
+		save2db(selected[0]);
+	} else if(cmd == 'write_file') {
+		if (select_num == 0) {
+            alert('请选择记录！');
+            return;
+        }
+        if (select_num > 1) {
+            alert('请选择一条记录！');
+            return;
+        }
+		save2filesystem(selected[0]);
+    } else if(cmd == 'select_show_fields') {
+		crawler_popup_wnd_show('选择要显示的字段', 'popup_query_data_show_fields.html', 500, 400);
+	}
+}
+
+</script>
+</head>
+
+<body onLoad="refresh();">
+<table id="results" width="100%" cellpadding="5" border="1" style="border-collapse: collapse;" bordercolor="#000000"><tbody>
+<tr id="results_head" style="background-color:#cccccc">
+<td width="100">序号</td>
+</tr>
+</tbody></table>
+</body>
+</html>
