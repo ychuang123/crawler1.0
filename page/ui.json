@@ -578,22 +578,6 @@
 							"page":"ui_reg.html"
 						}
 					]
-				},
-				{
-					"id":"uimodel_auth_mgr",
-					"windowTitle":"ÊÚÈ¨¹ÜÀí",
-					"pages":
-					[
-						{
-							"height":40,
-							"page":"ui_toolbar.html",
-							"js":"updateToolBar('uimodel_auth_mgr');"
-						},
-						{
-							"height":-1,
-							"page":"ui_auth_list.html"
-						}
-					]
 				}
 			]
 		},

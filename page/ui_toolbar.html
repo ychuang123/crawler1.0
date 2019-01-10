@@ -25,12 +25,6 @@ function hide_toolbar_exp_data() {
     document.getElementById('toolbar_exp_data_ruledefine').style.display = 'none';
 }
 
-function updateAuthListToolBar() {
-	document.getElementById('auth_query_total_num').innerHTML = callback('crawler_auth_query_total_num');
-	document.getElementById('auth_query_total_page').innerHTML = callback('crawler_auth_query_total_page');
-	document.getElementById('auth_query_cur_page').innerHTML = callback('crawler_auth_query_cur_page');
-}
-
 function updateProgramTestStatus() {
 	document.getElementById('program_test_status').innerHTML = callback('crawler_get_program_test_status');
 }
@@ -93,8 +87,6 @@ function updateToolBar(uimodel) {
 	document.getElementById('uimodel_field_set').style.display = 'none';
 	document.getElementById('uimodel_crawler_list').style.display = 'none';
 	document.getElementById('uimodel_reg').style.display = 'none';
-	document.getElementById('uimodel_auth_mgr').style.display = 'none';
-	document.getElementById('span_auth_mgr').style.display = 'none';
 	document.getElementById('input_write_2_db').style.display = 'none';
 	document.getElementById('span_conf_db').style.display = 'none';
 	document.getElementById('exe_debug_show_shell_toolbar').style.display = 'none';
@@ -177,11 +169,6 @@ function updateToolBar(uimodel) {
 	} else if(uimodel == 'uimodel_conf_list' || uimodel == 'uimodel_field_set' || uimodel == 'uimodel_crawler_list') {
 		document.getElementById(uimodel + '_select').value = uimodel;
 		
-	} else if(uimodel == 'uimodel_reg') {
-		if(callback('crawler_can_create_auth') == 1) {
-			updateAuthListToolBar();
-			document.getElementById('span_auth_mgr').style.display = '';
-		}
 	}
 }
 
@@ -965,7 +952,7 @@ function open_help_file() {
 <div id="uimodel_crawler_list" style="display:none">
 	<span>
 		<span style="FONT-FAMILY:宋体;font-size:18px;color:white;">模块</span>
-		<select id="uimodel_crawler_list_select" style="width:90px;" onchange="enter_uimodel(this.value);">>
+		<select id="uimodel_crawler_list_select" style="width:90px;" onchange="enter_uimodel(this.value);">
 			<option value="uimodel_conf_list">系统参数</option>
 			<option value="uimodel_field_set">字段模板</option>
 			<option value="uimodel_crawler_list">爬虫列表</option>
@@ -975,10 +962,7 @@ function open_help_file() {
 <div id="uimodel_reg" style="display:none">
 	<span>
         <input type="button" value="本机机器码" style="width:110px;" title="显示本机机器码" onclick="crawler_popup_wnd_show('本机机器码', 'popup_show_diskinfo.html', 300, 180);" />
-		<input type="button" value="输入授权码" style="width:110px;" title="输入授权码激活授权" onclick="crawler_popup_wnd_show('输入授权码', 'popup_auth.html', 300, 180);" />
-	</span>
-	<span id="span_auth_mgr" style="margin-left:10px;display:none;">
-		<input type="button" value="授权管理" style="width:100px;" title="授权管理" onclick="callback('crawler_auth_enter_list'); enter_uimodel('uimodel_auth_mgr');" />
+		<input type="button" value="输入授权码" style="width:110px;" title="输入授权码激活授权" onclick="crawler_popup_wnd_show('输入授权码', 'popup_auth.html', 700, 180);" />
 	</span>
 	<span id="expiry_date2" style="float:right;FONT-FAMILY:宋体;font-size:18px;color:white;">
 	</span>
@@ -988,28 +972,6 @@ function open_help_file() {
         <input type="button" value="帮助文档" style="width:100px;" title="显示帮助文档" onclick="open_help_file();" />
 	</span>
 	<span id="expiry_date3" style="float:right;FONT-FAMILY:宋体;font-size:18px;color:white;">
-	</span>
-</div>
-<div id="uimodel_auth_mgr" style="display:none">
-	<span>
-        <font style="color:white;font-family:宋体;font-size:18px;">共 </font>
-        <font id="auth_query_total_num" style="color:white;font-family:宋体;font-size:18px;">0</font>
-        <font style="color:white;font-family:宋体;font-size:18px;"> 条记录 </font> 
-        <font id="auth_query_total_page" style="color:white;font-family:宋体;font-size:18px;">0</font>
-        <font style="color:white;font-family:宋体;font-size:18px;"> 页 当前为第 </font> 
-        <font id="auth_query_cur_page" style="color:white;font-family:宋体;font-size:18px;">0</font>
-        <font style="color:white;font-family:宋体;font-size:18px;"> 页</font> 
-
-        <input type="button" value="首页" style="width:50px;" onclick="authQueryTurnPage('first_page');"/>
-		<input type="button" value="上页" style="width:50px;" onclick="authQueryTurnPage('pre_page');"/>
-		<input type="button" value="下页" style="width:50px;" onclick="authQueryTurnPage('next_page');"/>
-        <input type="button" value="末页" style="width:50px;" onclick="authQueryTurnPage('last_page');"/>
-	</span>
-	<span style="margin-left:10px;">
-		<input type="button" value="授权" style="width:50px;" title="生成授权码" onclick="crawler_popup_wnd_show('生成授权码', 'popup_create_auth.html', 350, 400);" />
-	</span>
-	<span style="margin-left:10px;">
-		<input type="button" value="返回" style="width:50px;" title="返回注册信息" onclick="callback('crawler_auth_leave_query'); enter_uimodel('uimodel_reg');"/>
 	</span>
 </div>
 </body>

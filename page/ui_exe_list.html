@@ -127,7 +127,12 @@ td
                 return;
             }
             callback('crawler_set_model_execute_define', selected[select_num - 1]);
-            crawler_popup_wnd_show('修改任务', 'popup_exe_define.html', 1000, 600);
+			var programName = callback('crawler_get_study_execute_program');
+			if(programName == '[自动新闻采集]') {
+				crawler_popup_wnd_show('修改自动新闻采集任务', 'popup_exe_auto_news_define.html', 1000, 800);
+			} else {
+				crawler_popup_wnd_show('修改任务', 'popup_exe_define.html', 1000, 600);
+			}
         } else if (cmd == 'del_task') {
             if (crawl_prompt_yes_or_no('是否要删除选择的 ' + select_num + ' 个任务？') == 0) {
                 return;
@@ -186,6 +191,14 @@ td
 				alert('任务还在加载数据');
 				return;
 			}
+			
+			var programName = callback('crawler_exebase_get_program_name', execute_index);
+			if(programName == '[自动新闻采集]') {
+				callback('crawler_queue_result_select_rule', parseInt(execute_index), 0);
+                crawler_enter_ui_model('uimodel_data_rec_query');
+                return;
+			}
+			
             //如果只有一个规则，直接进入数据查询界面
             var data_rule_keys = callback('crawler_exebase_get_data_rule_keys', execute_index).split(":");
             if (data_rule_keys.length == 1) {
@@ -193,7 +206,7 @@ td
                 crawler_enter_ui_model('uimodel_data_rec_query');
                 return;
             }
-
+			
             crawler_popup_wnd_show('选择规则', 'popup_query_result_select_rule.html?execute_index=' + execute_index, 500, 200);
 
         } else if (cmd == 'bak_data') {

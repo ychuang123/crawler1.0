@@ -42,6 +42,30 @@ td,div
         append('开始备份数据 ...');
         document.getElementById('btn_ok').value = '正在备份';
 
+		if(callback('crawler_exebase_get_program_name', execute_index) == '[自动新闻采集]') {
+			callback('crawler_queue_result_select_rule', execute_index, 0);
+			var total_page = callback('crawler_get_rec_query_total_page');
+			
+			append('开始备份数据, 共有 ' + callback('crawler_get_rec_query_total_page') + ' 页的数据 ...');
+			for(var pageNo = 1; pageNo <= total_page; pageNo++) {
+				append('开始备份第 ' + pageNo + ' 页的数据 ...');
+				var err = callback('crawler_bak_data', path + execute_index + '.csv');
+				if (err.length > 0) {
+					append('备份数据失败：' + err);
+					document.getElementById('btn_ok').value = '开始备份';
+					return;
+				}
+
+				if (pageNo < total_page) {
+					callback('crawler_query_load_onepage', 'next_page');
+				}
+			}
+
+			append('数据备份完成！');
+			document.getElementById('btn_ok').value = '开始备份';
+			return;
+		}
+		
         var table = document.getElementById('rules');
         var data_rule_keys = callback('crawler_exebase_get_data_rule_keys', execute_index).split(":");
         for (i = 0; i < data_rule_keys.length; i++) {
@@ -51,10 +75,6 @@ td,div
                 var total_page = callback('crawler_get_rec_query_total_page');
                 
                 append('开始备份规则 ' + rule + ' 的数据, 该规则共有 ' + callback('crawler_get_rec_query_total_page') + ' 页的数据 ...');
-                if(total_page <= 0) {
-                    append('规则 ' + rule + ' 的数据备份完成！');
-                    continue;
-                }
 
                 for(var pageNo = 1; pageNo <= total_page; pageNo++) {
                     append('开始备份规则 ' + rule + ' 的第 ' + pageNo + ' 页的数据 ...');
@@ -96,17 +116,21 @@ function load() {
     }
 
     var table = document.getElementById('rules');
-    var data_rule_keys = callback('crawler_exebase_get_data_rule_keys', execute_index).split(":");
-    for (i = 0; i < data_rule_keys.length; i++) {
-        var row = table.insertRow(i + 1);
-        var cell = row.insertCell(0);
-        cell.innerHTML = data_rule_keys[i];
+	if(callback('crawler_exebase_get_program_name', execute_index) == '[自动新闻采集]') {
+		table.style.display = 'none';
+	} else {
+		var data_rule_keys = callback('crawler_exebase_get_data_rule_keys', execute_index).split(":");
+		for (i = 0; i < data_rule_keys.length; i++) {
+			var row = table.insertRow(i + 1);
+			var cell = row.insertCell(0);
+			cell.innerHTML = data_rule_keys[i];
 
-        var h = '<input id="check_out_' + i + '" type="checkbox" checked="checked"/>';
-        cell = row.insertCell(1);
-        cell.innerHTML = h;
-    }
-
+			var h = '<input id="check_out_' + i + '" type="checkbox" checked="checked"/>';
+			cell = row.insertCell(1);
+			cell.innerHTML = h;
+		}
+	}
+	
     document.getElementById('btn_ok').setAttribute('onclick', 'bak(' + execute_index + ');');
 }
 

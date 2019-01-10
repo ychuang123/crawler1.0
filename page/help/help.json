@@ -248,6 +248,10 @@
 			"url":"content_task_add.html"
 		},
 		{
+			"name":"4.1.1 自动新闻采集",
+			"url":"content_task_add_autonews.html"
+		},
+		{
 			"name":"4.2 修改任务",
 			"url":"content_task_mod.html"
 		},

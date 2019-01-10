@@ -120,7 +120,8 @@ function load() {
     }
 	
     var data_rule_keys = callback('crawler_exebase_get_data_rule_keys', execute_index).split(":");
-	if(data_rule_keys.length > 1) {
+	var program_name = callback('crawler_exebase_get_program_name', execute_index);
+	if(data_rule_keys.length > 1 &&  program_name != '[自动新闻采集]') {
 		var ops = document.getElementById('rules').options;
 		for (i = 0; i < data_rule_keys.length; i++) {
 			ops.add(new Option(data_rule_keys[i], i));

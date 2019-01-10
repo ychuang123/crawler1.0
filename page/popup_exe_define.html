@@ -131,7 +131,7 @@ function commit(test) {
     var run_type_param = '';
 
     if (test == 0) {
-        var execute_name = document.getElementById("execute_name").value;
+        execute_name = document.getElementById("execute_name").value;
         if (execute_name == '') {
             alert('请输入名称！');
             return;
@@ -238,7 +238,7 @@ function select_rule_input_file(index) {
 			        <option value="RunTypeRepeat">循环运行</option>
 		        </select>
             </td>
-            <td><input id="run_type_param" type="text" style="width:700px;" title="定时: HH:MM,HH:MM  循环: M" /></td>
+            <td><input id="run_type_param" type="text" style="width:800px;" title="定时: HH:MM,HH:MM  循环: M" /></td>
             </tr>
         </tbody></table>
 	</div>

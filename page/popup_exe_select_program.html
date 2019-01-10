@@ -23,17 +23,20 @@ function load()
 {
     var ops = document.getElementById('program_name').options;
     ops.length = 0;
-
+	
+	ops.add(new Option('[自动新闻采集]', -1));
+	
     var count = callback('crawler_programbase_get_count');
-    for (i = 0; i < count; i++) {
+	for (i = 0; i < count; i++) {
         ops.add(new Option(callback('crawler_programbase_get_name', i), i));
     }
 }
 
 function commit()
 {
-    var program_index = document.getElementById("program_name").value;
-    var err = callback('crawler_add_execute_program', parseInt(program_index));
+    var v = document.getElementById("program_name").value;
+	var program_index = parseInt(v);
+    var err = callback('crawler_add_execute_program', program_index);
 	
     if (err != '') {
         alert(err);
@@ -41,7 +44,11 @@ function commit()
     }
 
     crawler_popup_wnd_hide();
-    crawler_popup_wnd_show('增加任务', 'popup_exe_define.html', 1000, 600);
+	if(program_index == -1) {
+		crawler_popup_wnd_show('增加自动新闻采集任务', 'popup_exe_auto_news_define.html', 1000, 800);
+	} else {
+		crawler_popup_wnd_show('增加任务', 'popup_exe_define.html', 1000, 600);
+	}
 }
 
 </script>
