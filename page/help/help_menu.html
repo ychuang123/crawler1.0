@@ -79,7 +79,18 @@ function load() {
         html += '</div>';
     }
     document.getElementById("b").innerHTML = html;
+	
 	goto_help_item(0);
+	
+	for (var i = 0; i < help_item_count; i++) {
+        var name = crawler_get_help_name(i);
+        var id = name.substring(0, name.indexOf(' '));
+		if(id.indexOf('.') > 0) {
+			continue;
+		}
+		
+		collect_item(i);
+	}
 }
 
 </script>

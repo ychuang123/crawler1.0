@@ -1,0 +1,94 @@
+﻿<html>
+<head>
+<style type="text/css">
+body
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: black;
+}
+input[type="submit"],input[type="button"]
+{
+	font-family: "宋体";
+	font-size: 18px;
+	color: white;
+	background-color: #87A3C9;
+	height: 26px;
+	width: 50px;
+	border: 1px;
+}
+</style>
+<script type="text/javascript">
+
+function exit() {
+	if(document.getElementById("next_hide").checked) {
+		callback('crawler_hide_welcome_dialog');
+	}
+	
+    crawler_popup_wnd_hide();
+}
+
+</script>
+</head>
+
+<body style="margin-left:10px;margin-top:20px;">
+	<div style="margin-left:5px;">
+		欢迎使用本软件。本软件是一款可视化网络爬虫制作平台，简单易用，功能强大
+	</div>
+	<div style="margin-top:10px;">
+		<ol>
+			<li>
+				操作特点
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				与市面上其他采集软件相比，本软件操作简单
+				</div>
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				用户无需阅读目标网页源码，无需配置正则表达式，只需在浏览器中标注目标数据即可
+				</div>
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				即使没有编程基础，用户也可自行完成数据采集任务，不需另请专业人员配置规则
+				</div>
+			</li>
+			<li style="margin-top:15px;">
+				即时采集
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				在浏览器模式下，浏览网页的同时，即可采集数据
+				</div>
+			</li>
+			<li style="margin-top:15px;">
+				定时重复采集
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				定义采集任务，可实现定时、重复采集目标数据。定义任务前，需先定义好规则和程序
+				</div>
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				规则定义了如何从网页抽取数据记录。只需标注目标数据，软件自动学习规则
+				</div>
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				程序定义了从种子url开始，使用规则抽取数据记录的整个流程
+				</div>
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				任务定义了要采集的种子url和运行方式
+				</div>
+			</li>
+			<li style="margin-top:15px;">
+				新闻自动采集
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				对于新闻数据，只需输入目标网站，程序自动完成该目标网站下的新闻采集
+				</div>
+			</li>
+			<li style="margin-top:15px;">
+				使用说明
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				本软件提供了详细的操作说明，参见：<font style="color:blue;">使用说明</font> > <font style="color:blue;">帮助文档</font>
+				</div>
+				<div style="margin-top:8px;margin-left:2px;margin-right:10px;">
+				帮助文档中有应用举例。建议新用户先看一下
+				</div>
+			</li>
+		</ol>
+	</div>
+	<div style="margin-left:5px;margin-top:20px;">
+		<input id="next_hide" type="checkbox"/>下次不再显示<input type="button" value="关闭" style="margin-left:20px;" onclick="exit();"/>
+	</div>
+</body>
+</html>
