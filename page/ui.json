@@ -559,29 +559,6 @@
 			]
 		},
 		{
-			"menu":"软件授权",
-			"title":"",
-			"sub_menus":
-			[
-				{
-					"id":"uimodel_reg",
-					"windowTitle":"软件授权",
-					"pages":
-					[
-						{
-							"height":40,
-							"page":"ui_toolbar.html",
-							"js":"updateToolBar('uimodel_reg');"
-						},
-						{
-							"height":-1,
-							"page":"ui_reg.html"
-						}
-					]
-				}
-			]
-		},
-		{
 			"menu":"使用说明",
 			"title":"",
 			"sub_menus":
@@ -605,13 +582,13 @@
 			]
 		},
 		{
-			"menu":"关于我们",
+			"menu":"联系我们",
 			"title":"",
 			"sub_menus":
 			[
 				{
 					"id":"uimodel_about_us",
-					"windowTitle":"关于我们",
+					"windowTitle":"联系我们",
 					"pages":
 					[
 						{

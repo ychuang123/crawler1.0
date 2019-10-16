@@ -182,10 +182,12 @@ function enter_uimodel(uimodel)
 
 function load()
 {
-	var msg = '本版本软件有效期：' + callback('crawler_get_expiry_date') + '，请提前下载新版本';
-	document.getElementById('expiry_date').innerHTML = msg;
-	document.getElementById('expiry_date2').innerHTML = msg;
-	document.getElementById('expiry_date3').innerHTML = msg;
+	if(callback('crawler_is_person_version') == 0) {
+		var msg = '本版本软件有效期：' + callback('crawler_get_expiry_date') + '，请提前下载新版本';
+		document.getElementById('expiry_date').innerHTML = msg;
+		document.getElementById('expiry_date2').innerHTML = msg;
+		document.getElementById('expiry_date3').innerHTML = msg;
+	}
 	updateToolBar(crawler_get_ui_model());
 }
 

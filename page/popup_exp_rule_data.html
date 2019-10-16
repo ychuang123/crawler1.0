@@ -30,6 +30,12 @@ td,div
     }
 
     function exp(execute_index, rule_index) {
+		var out_line_num = document.getElementById('out_line_num').value;
+		if(out_line_num == '') {
+			alert('请输入行数！');
+			return;
+		}
+		
 		document.getElementById('result').value = '';
 		document.getElementById('btn_ok').value = '正在导出';
 		append('检查参数 ...');
@@ -42,6 +48,16 @@ td,div
 		}
 		
 		var out_param = document.getElementById('out_param').value;
+		
+		var out_field_name = 0;
+		if(document.getElementById('out_field_name').checked) {
+			out_field_name = 1;
+		}
+		
+		var out_utf8 = 0;
+		if(document.getElementById('out_utf8').checked) {
+			out_utf8 = 1;
+		}
 		
 		var table = document.getElementById('fields');
 		
@@ -74,7 +90,7 @@ td,div
 			return;
         }
 		
-		var err = callback('crawler_exp_rule_data_init', path, out_type, out_param, contexts, fields);
+		var err = callback('crawler_exp_rule_data_init', parseInt(out_line_num), out_field_name, out_utf8, path, out_type, out_param, contexts, fields);
 		if (err.length > 0) {
 			append(err);
 			document.getElementById('btn_ok').value = '开始导出';
@@ -82,8 +98,8 @@ td,div
 		}
 		
 		callback('crawler_queue_result_select_rule', execute_index, parseInt(rule_index));
-        var total_page = callback('crawler_get_rec_query_total_page');
-        append('共有 ' + callback('crawler_get_rec_query_total_page') + ' 页的数据 ...');
+        var total_page = callback('crawler_exp_get_rec_total_page');
+        append('共有 ' + total_page + ' 页的数据 ...');
 		
 		for(var pageNo = 1; pageNo <= total_page; pageNo++) {
 			append('导出第 ' + pageNo + ' 页的数据 ...');
@@ -179,16 +195,25 @@ function select_file() {
 <body onLoad="load();" bgcolor="#CCCCCC" style="margin-left:20px;margin-top:20px;">
 	<div>
 		<div>
-            文件路径
+            文件
             <input id="path" type="text" style="width:450px;"/>
             <input type="button" value="文件" onclick="select_file();"/>
         </div>
 		<div style="margin-top:10px;">
-			输出
+			格式
 			<input type="radio" name="out_type" id="out_csv" checked/>CSV
 			<input type="radio" name="out_type" id="out_sep" />分隔
-			<input type="radio" name="out_type" id="out_format" />格式化
+			<input type="radio" name="out_type" id="out_format" />自定义
 			<input id="out_param" type="text" style="width:300px;" title="tag:<tag1>...<tag2>...<tag3>"/>
+		</div>
+		<div style="margin-top:10px;">
+			行数
+			<input id="out_line_num" type="text" style="width:60px;margin-right:50px;" title="0表示全部输出" value="0"/>
+			输出字段名
+			<input type="checkbox" id="out_field_name" style="margin-right:50px;"/>
+			输出编码
+			<input type="radio" name="out_charset" id="out_ansi" checked/>ANSI
+			<input type="radio" name="out_charset" id="out_utf8" />UTF-8
 		</div>
 		<div style="margin-top:10px;display:none;" id="div_rules">
 			规则
